@@ -1,3 +1,5 @@
+@AGENTS.md
+
 # Reha.mx — Guía para Claude Code
 
 > **Lee esto en cada sesión.** Es el contrato técnico del proyecto.
@@ -49,9 +51,9 @@ Middleware Next.js resuelve el tenant antes de cualquier render. Si no hay match
 
 | Capa | Tech |
 |---|---|
-| Framework | **Next.js 15** App Router + TypeScript estricto |
+| Framework | **Next.js 16** App Router + TypeScript estricto (master plan decía 15, usamos 16 — ver `docs/modulo-bootstrap.md`) |
 | UI | **Tailwind v4** + **shadcn/ui** (selectivo) + tokens propios (DESIGN.md) |
-| DB | **Supabase Postgres** + RLS multi-tenant |
+| DB | **Supabase Postgres self-hosted en dedi35661** + RLS multi-tenant |
 | ORM | **Drizzle** (NO Prisma) |
 | Auth | **Supabase Auth** (magic link + 2FA TOTP) |
 | Storage | **Supabase Storage** |
@@ -64,7 +66,7 @@ Middleware Next.js resuelve el tenant antes de cualquier render. Si no hay match
 | Email | **Resend** |
 | Monitoreo | **Sentry + Logtail** |
 | Tests | **Vitest + Playwright + Testing Library** |
-| Hosting | **Vercel + Supabase Cloud** |
+| Hosting | **Vercel + Supabase self-hosted** |
 
 **Prohibido:** Prisma, NextAuth, Redux, Zustand, MUI, Chakra, Mantine, MongoDB.
 
@@ -74,67 +76,27 @@ Middleware Next.js resuelve el tenant antes de cualquier render. Si no hay match
 
 ```
 reha-mx/
-├── app/
-│   ├── (marketing)/          ← reha.mx público
-│   ├── (app)/                ← {tenant}.reha.mx app clínica
-│   ├── (portal)/             ← portal paciente PWA
-│   ├── (admin)/              ← admin.reha.mx super-admin
-│   ├── api/
-│   │   ├── webhooks/         ← stripe, facturama, whatsapp
-│   │   └── cron/             ← Vercel cron
-│   └── layout.tsx
-├── components/
-│   ├── ui/                   ← shadcn primitives
-│   ├── shared/               ← KPI, Card, Avatar, BranchBadge
-│   ├── tenant/               ← TenantBranding, TenantSwitcher
-│   ├── agenda/
-│   ├── clinical/
-│   ├── billing/
-│   ├── portal/
-│   └── charts/
-├── lib/
-│   ├── supabase/
-│   │   ├── client.ts         ← browser
-│   │   ├── server.ts         ← RSC
-│   │   ├── service.ts        ← service role (solo server actions admin)
-│   │   └── middleware.ts
-│   ├── tenant/
-│   │   ├── resolver.ts       ← host/path → tenant_slug
-│   │   ├── context.ts        ← AsyncLocalStorage para tenant en server
-│   │   └── branding.ts
-│   ├── db/
-│   │   ├── schema/           ← drizzle schemas
-│   │   ├── queries/
-│   │   └── migrations/
-│   ├── facturama/
-│   ├── stripe/
-│   ├── whatsapp/
-│   ├── wearables/
-│   ├── auth/
-│   ├── audit/
-│   ├── validators/
-│   └── utils/
-├── server/
-│   └── actions/
-├── hooks/
-├── types/
+├── app/                      ← App Router (creado en bootstrap, módulos pendientes)
+├── components/               ← (pendiente Paso 3)
+├── lib/                      ← (pendiente Paso 3)
+├── server/actions/           ← (pendiente Paso 3)
 ├── docs/
 │   ├── 00-MASTER-PLAN.md
+│   ├── 01-CLAUDE-md.md
 │   ├── DESIGN.md
 │   ├── prototype-reference/  ← snapshot del prototipo HTML para consultar
-│   ├── modulo-bootstrap.md
-│   ├── modulo-agenda.md
 │   └── ...
-├── tests/
-│   ├── unit/
-│   └── e2e/
 ├── public/
-├── drizzle.config.ts
+├── tests/                    ← (pendiente Paso 11)
 ├── next.config.ts
-├── middleware.ts             ← tenant resolution + auth refresh
-├── tailwind.config.ts
 ├── tsconfig.json
+├── tailwind.config (CSS-based en v4)
+├── eslint.config.mjs
+├── package.json              ← name: "reha-mx"
+├── pnpm-lock.yaml
+├── pnpm-workspace.yaml       ← ignoredBuiltDependencies (sharp, unrs-resolver)
 ├── CLAUDE.md
+├── AGENTS.md                 ← disclaimer Next.js 16 (auto-generado)
 └── README.md
 ```
 
@@ -196,16 +158,16 @@ reha-mx/
 ```bash
 # Desarrollo
 pnpm dev                  # next dev (resolver tenant via /t/movewell o subdominio local)
-pnpm db:generate          # drizzle-kit generate
+pnpm db:generate          # drizzle-kit generate (Paso 7)
 pnpm db:push              # drizzle-kit push
 pnpm db:studio
 pnpm db:seed              # seed con MoveWell + 2da org de prueba
 
-# Tests
+# Tests (pendiente Paso 11)
 pnpm test
 pnpm test:e2e
 pnpm test:e2e:ui
-pnpm test:isolation       # test específico de aislamiento multi-tenant
+pnpm test:isolation
 
 # Calidad
 pnpm lint
@@ -216,83 +178,10 @@ pnpm format
 pnpm build
 pnpm start
 
-# Supabase local
-supabase start
-supabase db reset
+# Postgres directo (vía SSH tunnel a dedi35661)
+ssh -fN -L 5432:localhost:5432 antonio@dedi35661   # abrir tunnel
+pnpm db:migrate                                     # correr migrations
 ```
-
----
-
-## 🗂️ Patrón de Server Action
-
-```ts
-// server/actions/appointments.ts
-'use server';
-
-import { z } from 'zod';
-import { createServerClient } from '@/lib/supabase/server';
-import { getTenantContext } from '@/lib/tenant/context';
-import { revalidatePath } from 'next/cache';
-import { auditLog } from '@/lib/audit';
-
-const CreateAppointmentSchema = z.object({
-  patientId: z.string().uuid(),
-  practitionerId: z.string().uuid(),
-  startsAt: z.string().datetime(),
-  typeId: z.string().uuid(),
-  branchId: z.string().uuid(),
-});
-
-export async function createAppointmentAction(
-  input: z.infer<typeof CreateAppointmentSchema>
-) {
-  const parsed = CreateAppointmentSchema.parse(input);
-  const { organizationId } = await getTenantContext();
-  const supabase = createServerClient();
-
-  // organizationId NUNCA viene del cliente. Siempre del tenant context.
-  const { data, error } = await supabase
-    .from('appointments')
-    .insert({ ...parsed, organization_id: organizationId })
-    .select()
-    .single();
-
-  if (error) throw error;
-
-  await auditLog({
-    action: 'appointment.created',
-    resourceType: 'appointment',
-    resourceId: data.id,
-  });
-
-  revalidatePath(`/t/${tenantSlug}/agenda`);
-  return data;
-}
-```
-
-**Reglas:**
-- `'use server'` arriba.
-- Zod schema arriba.
-- `organizationId` desde context, **nunca** desde input.
-- Validar antes de DB.
-- `revalidatePath` después.
-- `auditLog()` si toca clínico.
-- Errores: lanzar; cliente los maneja con TanStack Query.
-
----
-
-## 📐 Referenciar el prototipo
-
-El prototipo HTML está en `docs/prototype-reference/`. Para portar una vista:
-
-1. Lee el `.jsx` original en `docs/prototype-reference/views/X.jsx`.
-2. Identifica: estructura, jerarquía, datos mostrados, estados.
-3. Reescribe como Server Component (default) + Client Components donde haya estado.
-4. Mantén tokens, tipografía, espaciado, patrones visuales.
-5. **Diverge cuando shadcn/ui lo hace mejor** — Combobox, Sheet, DataTable virtualizado, Command palette.
-6. Datos mock del prototipo (`docs/prototype-reference/data.jsx`) → seed de Drizzle (`lib/db/seed.ts`).
-
-**No copies-pegues `Object.assign(window, ...)` ni el patrón Babel-standalone.** Eso es artefacto del prototipo, no del SaaS.
 
 ---
 
@@ -304,6 +193,7 @@ El prototipo HTML está en `docs/prototype-reference/`. Para portar una vista:
 - Vocabulario clínico real (`Tendinopatía rotuliana`, `Esguince tobillo grado II`).
 - Títulos: `Dr.`, `Dra.`, `Mtro.`, `Mtra.`, `Lic.`.
 - Validación RFC/CURP/CFDI con regex correcto.
+- **Idioma de respuesta a Antonio:** español de México (tú/tienes/configuras), no Argentina ni España.
 
 ---
 
@@ -324,8 +214,9 @@ El prototipo HTML está en `docs/prototype-reference/`. Para portar una vista:
 ## 🔗 Referencias
 
 - Repo: https://github.com/antoniorod-spec/reha-mx
-- Prototipo (preservado): https://reha-mx-prototype.vercel.app
-- Next.js 15: https://nextjs.org/docs
+- Prototipo (preservado en branch `prototype`, tag `v0.1.0-prototype`): https://reha-mx-prototype.vercel.app (post Paso 13)
+- Supabase self-hosted: https://reha.antoniotembleque.com (vía Cloudflare Zero Trust)
+- Next.js 16: ver `node_modules/next/dist/docs/` (training data puede estar desactualizado — ver `AGENTS.md`)
 - Supabase: https://supabase.com/docs
 - Drizzle: https://orm.drizzle.team
 - shadcn/ui: https://ui.shadcn.com
