@@ -1,0 +1,25 @@
+node_modules
+.next
+out
+build
+.vercel
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Prototipo HTML — no formatear
+docs/prototype-reference
+
+# Assets binarios
+public
+*.svg
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.ico
+*.woff
+*.woff2
+
+# Auto-generados
+next-env.d.ts

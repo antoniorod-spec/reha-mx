@@ -8,7 +8,7 @@
 
 ## 🎬 Mensaje a Claude Code
 
-```
+````
 Vamos a construir Reha.mx — SaaS B2B para clínicas de readaptación deportiva en México. MoveWell SLP es el cliente pivote (firmó propuesta KonectAI por $510k MXN, financia el desarrollo y es el primer tenant). Hoy ejecutamos la **Fase 0: Discovery + Bootstrap técnico + Multi-tenancy**.
 
 ## Contexto
@@ -44,7 +44,7 @@ git push origin v0.1.0-prototype
 git checkout main
 git checkout -b app-real
 git push -u origin app-real
-```
+````
 
 **Después decímelo.** Yo confirmo que el prototipo quedó preservado y procedés con el cleanup.
 
@@ -116,12 +116,14 @@ hooks, types, tests/{unit,e2e}
 ## Paso 5: Multi-tenancy (CRÍTICO — esto define la arquitectura)
 
 ### Schema base
+
 - `lib/db/schema/organizations.ts` — `id`, `slug` (unique), `name`, `created_at`, `subscription_status`.
 - `lib/db/schema/tenant-domains.ts` — `domain` → `organization_id`, para custom domains.
 - `lib/db/schema/tenant-branding.ts` — logo, accent_color, email_from, etc.
 - `lib/db/schema/members.ts` — `user_id` (auth.users) ↔ `organization_id` ↔ `role` ↔ `status`.
 
 ### Resolver
+
 - `lib/tenant/resolver.ts` — función que recibe `host` + `pathname` y devuelve `tenant_slug`:
   - Si subdomain (no `www`, no vacío): subdomain = slug.
   - Si path empieza con `/t/[slug]`: extraer slug.
@@ -131,6 +133,7 @@ hooks, types, tests/{unit,e2e}
 - `middleware.ts` raíz — resuelve tenant + refresca sesión Supabase + setea context.
 
 ### Test de aislamiento
+
 - `tests/e2e/multi-tenant.spec.ts` — crea 2 orgs, 2 users (uno en cada), verifica que user A no puede leer datos de org B con ningún query.
 
 ## Paso 6: Supabase + Auth
@@ -159,6 +162,7 @@ pnpm add -D drizzle-kit
 ## Paso 8: RLS base
 
 `lib/db/migrations/0001_rls.sql`:
+
 - SELECT/INSERT/UPDATE en cada tabla por tenant: `organization_id IN (SELECT organization_id FROM members WHERE user_id = auth.uid() AND status='active')`.
 - `audit_logs`: solo INSERT vía trigger, sin SELECT directo (queries vía función `SECURITY DEFINER`).
 - Test SQL en `tests/unit/rls.test.ts` que crea 2 orgs, 2 users, verifica aislamiento con `set request.jwt.claim.sub = 'user_id'`.
@@ -172,6 +176,7 @@ pnpm add -D drizzle-kit
 ## Paso 10: Seed de datos
 
 `lib/db/seed.ts` con:
+
 - **Org 1: MoveWell SLP** (slug `movewell`)
   - 1 sucursal: `MoveWell Centro`
   - 3 users: 1 admin (Antonio), 1 fisio (Dra. Paulina Granados), 1 recepción (Lic. Karla Méndez)
@@ -209,6 +214,7 @@ pnpm add -D drizzle-kit
 ## Paso 14: Documentación
 
 `docs/modulo-bootstrap.md`:
+
 - Decisiones tomadas en Fase 0.
 - Cómo correr el proyecto (incluyendo cómo simular subdomain en dev: `/t/movewell` en localhost).
 - Cómo crear un usuario de prueba.
@@ -243,6 +249,7 @@ Listame estas con respuestas por defecto sugeridas. Yo confirmo o corrijo:
 ## Criterios de cierre de Fase 0
 
 La fase termina cuando puedo:
+
 - [ ] Ver branch `prototype` en GitHub con tag `v0.1.0-prototype`
 - [ ] Ver `reha-mx-prototype.vercel.app` sirviendo el prototipo
 - [ ] Clonar repo, checkout `app-real`, `pnpm install && pnpm dev`
@@ -255,7 +262,8 @@ La fase termina cuando puedo:
 - [ ] `docs/modulo-bootstrap.md` completo
 
 Empezá leyendo los 3 archivos y dame tu resumen + las 8 preguntas. No toques nada hasta que apruebe.
-```
+
+````
 
 ---
 
@@ -274,6 +282,6 @@ cp /ruta/a/01-CLAUDE-md.md CLAUDE.md
 git add docs/ CLAUDE.md
 git commit -m "docs: master plan + claude.md for SaaS build"
 git push origin main
-```
+````
 
 Después abrís Claude Code en esa carpeta y pegás el prompt de arriba.

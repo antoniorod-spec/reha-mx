@@ -14,6 +14,7 @@ Reha.mx es una herramienta clínica seria para profesionales de la salud + un po
 - **Mobile-first en el portal paciente / desktop-first en la app clínica.**
 
 **Reglas anti-slop:**
+
 - ❌ Nada de gradientes saturados decorativos. Solo gradientes sutiles para el logo y avatares.
 - ❌ Nada de emojis decorativos en UI. Iconografía siempre con line icons (`src/icons.jsx`).
 - ❌ Nada de borders accent + rounded card como decoración. La info se jerarquiza con tipografía y espaciado.
@@ -73,6 +74,7 @@ El tema se controla por la clase `body.theme-light` o ausencia. El estado vive e
 ### Acento de marca
 
 **Cyan `#3FBCD4`** es THE color. Se usa para:
+
 - Logo + gradiente `linear-gradient(135deg, #1B3A5C → #3FBCD4)`.
 - Botones primarios (`background: t.accent`, `color: "#06101C"` — texto navy oscuro sobre cyan, NUNCA blanco).
 - Estados activos en navegación.
@@ -96,7 +98,10 @@ Estos colores aparecen como dots/series en gráficos multisucursal. No los reuse
 ## ✏️ Tipografía
 
 ```html
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+  rel="stylesheet"
+/>
 ```
 
 - **Inter** → toda la UI (headings, body, labels).
@@ -104,17 +109,18 @@ Estos colores aparecen como dots/series en gráficos multisucursal. No los reuse
 
 ### Escala (en uso real)
 
-| Uso                              | Tamaño              | Peso       | Tracking            |
-|----------------------------------|---------------------|------------|---------------------|
-| KPI numérico grande              | 28-32px (mono)      | 600        | `tracking-tighter2` (-0.022em) |
-| Heading vista (h1)               | 22-26px             | 600        | `tracking-tighter2` |
-| Subheading sección (h2)          | 16-18px             | 600        | `tracking-tightish` (-0.011em) |
-| Card title                       | 13-14px             | 600        | `tracking-tightish` |
-| Body                             | 12.5-13px           | 400/500    | normal              |
-| Label / muted                    | 11-11.5px           | 500        | normal              |
-| Hint / micro                     | 9-10.5px            | 400/500 mono uppercase | wider |
+| Uso                     | Tamaño         | Peso                   | Tracking                       |
+| ----------------------- | -------------- | ---------------------- | ------------------------------ |
+| KPI numérico grande     | 28-32px (mono) | 600                    | `tracking-tighter2` (-0.022em) |
+| Heading vista (h1)      | 22-26px        | 600                    | `tracking-tighter2`            |
+| Subheading sección (h2) | 16-18px        | 600                    | `tracking-tightish` (-0.011em) |
+| Card title              | 13-14px        | 600                    | `tracking-tightish`            |
+| Body                    | 12.5-13px      | 400/500                | normal                         |
+| Label / muted           | 11-11.5px      | 500                    | normal                         |
+| Hint / micro            | 9-10.5px       | 400/500 mono uppercase | wider                          |
 
 **Reglas:**
+
 - Nunca pongas labels en uppercase con letter-spacing extremo si no son metadata.
 - Los porcentajes y deltas en KPIs van **siempre en mono**.
 - `text-wrap: pretty` en headings largos.
@@ -159,6 +165,7 @@ Todo está en `src/charts.jsx`. Componentes disponibles:
 - `<HeatmapGrid rows days hours theme>` — heatmap día×hora (paleta cyan).
 
 **Reglas:**
+
 - Series principales **siempre en accent cyan** (`#3FBCD4`).
 - Series secundarias usan los colores semánticos de sucursal (`#5B8AC9`, `#7EE3C5`).
 - Grid lines: `#1F1F1F` dark / `#EAEAEA` light, **bien sutiles**.
@@ -170,22 +177,29 @@ Todo está en `src/charts.jsx`. Componentes disponibles:
 ## 🧱 Patrones de componentes recurrentes
 
 ### Botón primario
+
 ```jsx
-<button className="px-3 py-1.5 rounded-md text-[12px] font-semibold flex items-center gap-1.5"
-        style={{ background: t.accent, color: "#06101C" }}>
-  <IconPlus size={13}/> Nueva cita
+<button
+  className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[12px] font-semibold"
+  style={{ background: t.accent, color: '#06101C' }}
+>
+  <IconPlus size={13} /> Nueva cita
 </button>
 ```
 
 ### Botón secundario
+
 ```jsx
-<button className="px-3 py-1.5 rounded-md text-[12px] font-medium flex items-center gap-1.5"
-        style={{ background: t.surface2, color: t.muted, border: `1px solid ${t.border}` }}>
-  <IconList size={13}/> Tabla
+<button
+  className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[12px] font-medium"
+  style={{ background: t.surface2, color: t.muted, border: `1px solid ${t.border}` }}
+>
+  <IconList size={13} /> Tabla
 </button>
 ```
 
 ### Card
+
 ```jsx
 <div className="rounded-xl p-4" style={{ background: t.surface, border: `1px solid ${t.border}` }}>
   …
@@ -193,27 +207,45 @@ Todo está en `src/charts.jsx`. Componentes disponibles:
 ```
 
 ### KPI
+
 ```jsx
 <div className="rounded-xl p-4" style={{ background: t.surface, border: `1px solid ${t.border}` }}>
-  <div className="text-[11px] font-medium" style={{ color: t.muted }}>Pacientes activos</div>
-  <div className="mt-1 flex items-baseline gap-2">
-    <div className="text-[28px] font-mono font-semibold tracking-tighter2" style={{ color: t.text }}>487</div>
-    <div className="text-[11px] font-mono" style={{ color: t.good }}>+12%</div>
+  <div className="text-[11px] font-medium" style={{ color: t.muted }}>
+    Pacientes activos
   </div>
-  <div className="text-[10px] mt-0.5" style={{ color: t.subtle }}>vs mes anterior</div>
+  <div className="mt-1 flex items-baseline gap-2">
+    <div
+      className="tracking-tighter2 font-mono text-[28px] font-semibold"
+      style={{ color: t.text }}
+    >
+      487
+    </div>
+    <div className="font-mono text-[11px]" style={{ color: t.good }}>
+      +12%
+    </div>
+  </div>
+  <div className="mt-0.5 text-[10px]" style={{ color: t.subtle }}>
+    vs mes anterior
+  </div>
 </div>
 ```
 
 ### Avatar (iniciales)
+
 ```jsx
-<div className="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-semibold"
-     style={{ background: "linear-gradient(135deg, #1B3A5C, #3FBCD4)", color: "#FFFFFF" }}>AR</div>
+<div
+  className="flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-semibold"
+  style={{ background: 'linear-gradient(135deg, #1B3A5C, #3FBCD4)', color: '#FFFFFF' }}
+>
+  AR
+</div>
 ```
 
 ### Badge sucursal (dot + nombre)
+
 ```jsx
 <span className="flex items-center gap-1.5 text-[11.5px]" style={{ color: t.muted }}>
-  <span className="w-1.5 h-1.5 rounded-full" style={{ background: branch.color }}/>
+  <span className="h-1.5 w-1.5 rounded-full" style={{ background: branch.color }} />
   {branch.name}
 </span>
 ```
@@ -223,11 +255,13 @@ Todo está en `src/charts.jsx`. Componentes disponibles:
 ## 📱 Portal paciente (mobile)
 
 Vive **dentro de un iPhone frame** (`components/ios-frame.jsx`). El frame simula:
+
 - Status bar (44px notch area).
 - Home indicator.
 - Border radius del device.
 
 **Reglas específicas:**
+
 - Toda pantalla del portal (incluidos overlays) **debe respetar el padding del status bar**. Hay un patrón establecido en `portal-screens-extra.jsx` — copiar de ahí.
 - Los tabs del portal viven en `portal.jsx` y usan iconos de `icons.jsx`.
 - Tipografía un poco más grande que la app clínica (es para pacientes, no para profesionales mirando datos densos).

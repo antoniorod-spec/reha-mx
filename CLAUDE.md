@@ -33,6 +33,7 @@ Cliente real, datos sensibles de salud, **NOM-004-SSA3 + LFPDPPP + NOM-024** son
 **Cada tabla por tenant lleva `organization_id`. Sin excepciones.** RLS aísla los datos.
 
 ### Resolución de tenant
+
 - Subdominio: `movewell.reha.mx` → `tenant_slug = movewell`.
 - Path prefix (dev): `localhost:3000/t/movewell`.
 - Custom domain: `app.movewell.mx` → `tenant_domains` table.
@@ -40,6 +41,7 @@ Cliente real, datos sensibles de salud, **NOM-004-SSA3 + LFPDPPP + NOM-024** son
 Middleware Next.js resuelve el tenant antes de cualquier render. Si no hay match → 404 público o redirect a `reha.mx`.
 
 ### Reglas
+
 1. **Toda tabla nueva** con datos de clínica → `organization_id NOT NULL` + RLS escrita en la **misma migration**.
 2. **Test E2E** con 2 orgs en cada PR que toque DB. Verifica aislamiento.
 3. **Service role key** solo en server actions admin, jamás en route handlers públicos sin auth.
@@ -49,24 +51,24 @@ Middleware Next.js resuelve el tenant antes de cualquier render. Si no hay match
 
 ## 🧰 Stack (cerrado)
 
-| Capa | Tech |
-|---|---|
-| Framework | **Next.js 16** App Router + TypeScript estricto (master plan decía 15, usamos 16 — ver `docs/modulo-bootstrap.md`) |
-| UI | **Tailwind v4** + **shadcn/ui** (selectivo) + tokens propios (DESIGN.md) |
-| DB | **Supabase Postgres self-hosted en dedi35661** + RLS multi-tenant |
-| ORM | **Drizzle** (NO Prisma) |
-| Auth | **Supabase Auth** (magic link + 2FA TOTP) |
-| Storage | **Supabase Storage** |
-| Server state | **TanStack Query v5** |
-| Forms | **React Hook Form + Zod** |
-| Pagos | **Stripe** (con adapter para MP/Conekta) |
-| CFDI | **Facturama API** |
-| WhatsApp | **Evolution API** (infra KonectAI) |
-| Orquestación | **n8n** (recordatorios, NPS, reseñas) |
-| Email | **Resend** |
-| Monitoreo | **Sentry + Logtail** |
-| Tests | **Vitest + Playwright + Testing Library** |
-| Hosting | **Vercel + Supabase self-hosted** |
+| Capa         | Tech                                                                                                               |
+| ------------ | ------------------------------------------------------------------------------------------------------------------ |
+| Framework    | **Next.js 16** App Router + TypeScript estricto (master plan decía 15, usamos 16 — ver `docs/modulo-bootstrap.md`) |
+| UI           | **Tailwind v4** + **shadcn/ui** (selectivo) + tokens propios (DESIGN.md)                                           |
+| DB           | **Supabase Postgres self-hosted en dedi35661** + RLS multi-tenant                                                  |
+| ORM          | **Drizzle** (NO Prisma)                                                                                            |
+| Auth         | **Supabase Auth** (magic link + 2FA TOTP)                                                                          |
+| Storage      | **Supabase Storage**                                                                                               |
+| Server state | **TanStack Query v5**                                                                                              |
+| Forms        | **React Hook Form + Zod**                                                                                          |
+| Pagos        | **Stripe** (con adapter para MP/Conekta)                                                                           |
+| CFDI         | **Facturama API**                                                                                                  |
+| WhatsApp     | **Evolution API** (infra KonectAI)                                                                                 |
+| Orquestación | **n8n** (recordatorios, NPS, reseñas)                                                                              |
+| Email        | **Resend**                                                                                                         |
+| Monitoreo    | **Sentry + Logtail**                                                                                               |
+| Tests        | **Vitest + Playwright + Testing Library**                                                                          |
+| Hosting      | **Vercel + Supabase self-hosted**                                                                                  |
 
 **Prohibido:** Prisma, NextAuth, Redux, Zustand, MUI, Chakra, Mantine, MongoDB.
 

@@ -37,6 +37,7 @@ Reha.mx S.A.P.I.                          MoveWell SLP
 **Cuota mensual operativa pass-through: $3,500 MXN + IVA**
 
 Cubre:
+
 - Su porción de Vercel Pro (~$400 MXN equivalente)
 - Su porción de Supabase Pro (~$700 MXN equivalente)
 - Conversaciones WhatsApp Business API (~$1,200 MXN, ajustable a uso real)
@@ -45,12 +46,14 @@ Cubre:
 - Sentry + Logtail + monitoreo (~$400 MXN)
 
 **Extras pass-through cobrados a costo cuando aplican:**
+
 - Tokens de IA (transcripciones SOAP, sugerencias clínicas) — facturado por uso real al costo de OpenAI/Anthropic.
 - Storage extra de estudios médicos si supera el plan base.
 - Servicios premium de wearables si requieren API paga (Whoop B2B).
 - Migraciones de datos puntuales después del go-live.
 
 **Reglas:**
+
 - Si el costo real es **menor** al estimado → se factura el real (no se queda Reha.mx con el delta).
 - Si el costo real es **mayor** → se ajusta la cuota con 30 días de aviso, sin penalización por terminación.
 - Reha.mx muestra desglose mensual transparente en el portal admin del tenant.
@@ -79,33 +82,39 @@ Cubre:
 Como cliente fundador #1, MoveWell recibe **de por vida** (mientras opere como clínica):
 
 ### Acceso al producto
+
 - ✅ **Uso ilimitado** del SaaS Reha.mx sin costo de licencia.
 - ✅ Todos los módulos actuales y futuros incluidos sin costo extra.
 - ✅ Sin límite de pacientes, fisios, sucursales, citas, almacenamiento (dentro de uso razonable).
 - ✅ Custom domain (`app.movewell.mx`) o subdomain (`movewell.reha.mx`) a elección.
 
 ### Branding y configuración
+
 - ✅ Logo MoveWell, colores propios, "from email" propio en notificaciones a pacientes.
 - ✅ Catálogos clínicos editables (protocolos, evaluaciones, plantillas SOAP).
 - ✅ Aviso de privacidad, consentimientos y términos personalizados.
 
 ### Soporte prioritario
+
 - ✅ Canal directo de Slack con Antonio.
 - ✅ Respuesta a issues críticos en menos de 4h hábiles.
 - ✅ Capacitación inicial y refresher anual sin costo.
 - ✅ Acompañamiento presencial en SLP cuando se requiera.
 
 ### Influencia en roadmap
+
 - ✅ **3 features priorizadas por año** dentro del alcance funcional del SaaS, sin costo.
 - ✅ Acceso anticipado (beta) a features nuevas.
 - ✅ Voz directa en quarterly product reviews de Reha.mx.
 
 ### Reconocimiento como fundador
+
 - ✅ Mención como "Cliente Fundador" en la web pública de Reha.mx (opcional, requiere consentimiento).
 - ✅ Caso de éxito documentado para marketing (con datos anonimizados).
 - ✅ Logo "Powered by Reha.mx" en el portal del paciente — opcional, MoveWell decide si quiere mostrarlo.
 
 ### Garantías de continuidad
+
 - ✅ Si Reha.mx descontinúa el servicio, **export completo de datos en JSON + PDF** sin costo, dentro de 30 días.
 - ✅ Aviso de 6 meses si se discontinúa el SaaS (no es un riesgo cercano, pero se garantiza por escrito).
 
@@ -127,17 +136,17 @@ Estos son los puntos donde se sostiene la sostenibilidad del SaaS. Si MoveWell e
 
 ## 📊 Por qué este modelo es ganador para MoveWell
 
-| Concepto | Propuesta original ($510k) | Modelo Cliente Fundador |
-|---|---|---|
-| Pago inicial | $510,000 MXN | $0 |
-| Pago mensual | $11,100 MXN | $3,500 MXN (pass-through) |
-| Costo total año 1 | $643,200 MXN | $42,000 MXN |
-| Costo total 5 años | $1,176,000 MXN | $210,000 MXN |
-| Recibe código fuente | Sí (al final) | No |
-| Producto sigue evolucionando | No (queda estático) | Sí (updates constantes gratis) |
-| Soporte largo plazo | Cobrado aparte | Incluido |
-| Influencia roadmap | No formal | 3 features/año |
-| Riesgo de obsolescencia | Alto (código congelado) | Cero (SaaS vivo) |
+| Concepto                     | Propuesta original ($510k) | Modelo Cliente Fundador        |
+| ---------------------------- | -------------------------- | ------------------------------ |
+| Pago inicial                 | $510,000 MXN               | $0                             |
+| Pago mensual                 | $11,100 MXN                | $3,500 MXN (pass-through)      |
+| Costo total año 1            | $643,200 MXN               | $42,000 MXN                    |
+| Costo total 5 años           | $1,176,000 MXN             | $210,000 MXN                   |
+| Recibe código fuente         | Sí (al final)              | No                             |
+| Producto sigue evolucionando | No (queda estático)        | Sí (updates constantes gratis) |
+| Soporte largo plazo          | Cobrado aparte             | Incluido                       |
+| Influencia roadmap           | No formal                  | 3 features/año                 |
+| Riesgo de obsolescencia      | Alto (código congelado)    | Cero (SaaS vivo)               |
 
 **Ahorro real para MoveWell en 5 años: ~$966,000 MXN** + producto actualizado vs producto envejecido.
 
@@ -163,12 +172,14 @@ Estos son los puntos donde se sostiene la sostenibilidad del SaaS. Si MoveWell e
 **Sociedad Anónima Promotora de Inversión de Capital Variable** — figura mexicana ideal para SaaS, permite múltiples accionistas, levantamiento de capital futuro y emisión de acciones diferenciadas.
 
 **Composición inicial:**
+
 - 100% Antonio Rodríguez de Tembleque (vía KonectAI o como persona física, según conveniencia fiscal).
 - Sin accionistas externos en el día 1.
 - Reserva 15-20% para empleados clave futuros (employee option pool).
 - Reserva para inversionistas si se levanta capital después.
 
 **Objeto social:**
+
 - Desarrollo, comercialización y operación de plataformas SaaS para el sector salud.
 - Servicios de tecnología para clínicas y profesionales de la salud.
 
@@ -181,12 +192,14 @@ Estos son los puntos donde se sostiene la sostenibilidad del SaaS. Si MoveWell e
 ### Relación KonectAI ↔ Reha.mx
 
 **Opción A — Recomendada: Reha.mx contrata a KonectAI como proveedor de desarrollo**
+
 - KonectAI factura desarrollo + mantenimiento a Reha.mx.
 - Reha.mx es la dueña del SaaS y de la relación con MoveWell.
 - KonectAI sigue siendo agencia de desarrollo, con Reha.mx como uno de sus clientes principales.
 - Ventaja fiscal: separa los flujos de ingreso, permite escalar Reha.mx independiente.
 
 **Opción B: KonectAI hace work-for-hire y cede IP a Reha.mx**
+
 - Contrato de cesión de derechos patrimoniales de autor (Ley Federal del Derecho de Autor, México).
 - Más limpio en términos de propiedad pero implica que KonectAI no factura desarrollo, solo se compensa si Reha.mx paga dividendos.
 
@@ -197,25 +210,31 @@ Estos son los puntos donde se sostiene la sostenibilidad del SaaS. Si MoveWell e
 ## 📜 Documentos legales necesarios
 
 ### 1. Constitución de Reha.mx S.A.P.I. de C.V.
+
 - Ante notario público en SLP.
 - Estatutos sociales con objeto, capital, órganos de gobierno.
 - RFC y alta SAT.
 - Cuenta bancaria empresarial.
 
 ### 2. Cancelación / sustitución de la propuesta KonectAI ↔ MoveWell
+
 Carta de común acuerdo donde:
+
 - Se cancela la propuesta firmada del 21 de abril de 2026 por $510k MXN.
 - Las partes acuerdan que ningún anticipo ha sido cobrado (verificá esto antes).
 - Se sustituye por el contrato de Cliente Fundador de Reha.mx S.A.P.I.
 - Cero penalizaciones para ninguna parte.
 
 ### 3. Contrato de Cliente Fundador Reha.mx ↔ MoveWell
+
 Plantilla en sección siguiente.
 
 ### 4. Contrato de prestación de servicios Reha.mx ↔ KonectAI (opcional, Opción A)
+
 KonectAI desarrolla y mantiene el SaaS para Reha.mx, factura mensual o por hito.
 
 ### 5. NDA mutuo Reha.mx ↔ MoveWell
+
 Para protección de información clínica, comercial y operativa.
 
 ---
@@ -418,6 +437,7 @@ Nombre y firma                      Nombre y firma
 ```
 
 ⚠️ **Esta plantilla es orientativa, no es asesoría legal.** Hacela revisar por un abogado mercantil mexicano. Mínimo verificar:
+
 - Compatibilidad con LFPDPPP en cuanto a tratamiento de datos del paciente.
 - Que la cláusula de propiedad intelectual sea ejecutable.
 - Que la cuota pass-through no constituya comisión mercantil sino reembolso (impacta IVA).
@@ -428,11 +448,13 @@ Nombre y firma                      Nombre y firma
 ## 📅 Plan de ejecución legal-comercial
 
 ### Esta semana
+
 - [ ] Verificar que NO se haya cobrado anticipo sobre la propuesta de $510k.
 - [ ] Reunión con MoveWell para presentar el modelo Cliente Fundador.
 - [ ] Si MoveWell acepta verbalmente: empezar trámites paralelos.
 
 ### Semanas 1-4
+
 - [ ] Iniciar constitución de Reha.mx S.A.P.I. de C.V. con notario.
 - [ ] Registrar marca "Reha.mx" en IMPI (México) — tomar antes que alguien.
 - [ ] Registrar dominios: `reha.mx`, `reha-mx.com`, `gestionarreha.mx`.
@@ -442,12 +464,14 @@ Nombre y firma                      Nombre y firma
   - Contrato KonectAI ↔ Reha.mx (si Opción A).
 
 ### Semana 5-6
+
 - [ ] Constitución finalizada, RFC obtenido.
 - [ ] Cuenta bancaria empresarial Reha.mx.
 - [ ] Firmas de los 3 contratos.
 - [ ] Primer pago de cuota mensual de MoveWell a Reha.mx.
 
 ### Semana 6+
+
 - [ ] **Recién entonces:** arrancar Fase 0 con Claude Code.
 
 ⚠️ **Crítico:** No empezar a escribir código del SaaS hasta que la sociedad esté constituida y los contratos firmados. De lo contrario, el código se escribe bajo KonectAI y hay que cederlo después con todo el papeleo extra.

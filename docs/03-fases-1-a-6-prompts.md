@@ -482,6 +482,7 @@ Plan detallado + dudas. Comunicación con cliente es prioridad.
 ## 🎯 Post Fase 6 — preparación comercial
 
 Ya en producción con MoveWell, el SaaS Reha.mx tiene:
+
 - Multi-tenant funcional probado en pen-test.
 - Provisioning automatizado de nuevos tenants.
 - Branding por tenant.
