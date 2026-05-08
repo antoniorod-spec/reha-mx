@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ssh -V)",
+      "Bash(pnpm db:generate)",
+      "Bash(pnpm db:migrate)",
+      "Bash(echo \"Lint exit: $?\")",
+      "Bash(echo \"Format exit: $?\")"
+    ]
+  }
+}
