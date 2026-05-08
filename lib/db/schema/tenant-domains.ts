@@ -4,9 +4,9 @@ import { organizations } from './organizations';
 
 /**
  * Custom domains por tenant — ej: app.movewell.mx → org MoveWell.
- * El tenant resolver consulta esta tabla cuando el host no es {slug}.reha.mx.
+ * El tenant resolver consulta esta tabla cuando el host no es {slug}.rehai.app.
  *
- * Subdomain bajo reha.mx (movewell.reha.mx) NO va aquí — se resuelve por slug.
+ * Subdomain bajo rehai.app (movewell.rehai.app) NO va aquí — se resuelve por slug.
  */
 export const tenantDomains = pgTable('tenant_domains', {
   id: uuid('id').defaultRandom().primaryKey(),

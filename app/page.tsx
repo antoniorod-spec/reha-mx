@@ -14,7 +14,7 @@ export default function Home() {
           <span className="bg-accent-soft text-accent inline-block rounded-md px-2 py-0.5 font-mono text-[10px] font-medium tracking-wider uppercase">
             En construcción
           </span>
-          <h1 className="text-text text-2xl font-semibold tracking-[-0.022em]">Reha.mx</h1>
+          <h1 className="text-text text-2xl font-semibold tracking-[-0.022em]">Rehai</h1>
           <p className="text-muted text-[13px]">
             Sistema operativo para clínicas de readaptación deportiva en México. La landing pública
             llega en Fase 1.

@@ -6,7 +6,7 @@ import type { Config } from 'drizzle-kit';
 loadEnv({ path: '.env.local' });
 
 /**
- * Drizzle config para Reha.mx.
+ * Drizzle config para Rehai.
  *
  * Conecta al SESSION POOLER (5532) — soporta prepared statements y todo lo
  * que drizzle-kit necesita para introspección, generate, push, migrate.

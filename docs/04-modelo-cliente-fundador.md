@@ -1,16 +1,16 @@
-# 🤝 Anexo comercial — Modelo "Cliente Fundador" Reha.mx + MoveWell SLP
+# 🤝 Anexo comercial — Modelo "Cliente Fundador" Rehai + MoveWell SLP
 
-> Define la relación comercial entre **Reha.mx S.A.P.I. de C.V.** (en formación) y **MoveWell SLP** como cliente fundador del SaaS.
+> Define la relación comercial entre **Rehai S.A.P.I. de C.V.** (en formación) y **MoveWell SLP** como cliente fundador del SaaS.
 > Este anexo **reemplaza** la propuesta original de KonectAI con MoveWell por $510k MXN.
 
 ---
 
 ## 🎯 La esencia del trato
 
-**Reha.mx** desarrolla el SaaS. **MoveWell** lo recibe gratis de por vida a cambio de ser el cliente fundador que valida el producto y permite a Reha.mx aprender en el campo real.
+**Rehai** desarrolla el SaaS. **MoveWell** lo recibe gratis de por vida a cambio de ser el cliente fundador que valida el producto y permite a Rehai aprender en el campo real.
 
 ```
-Reha.mx S.A.P.I.                          MoveWell SLP
+Rehai S.A.P.I.                          MoveWell SLP
 (empresa nueva, propiedad de Antonio)     (clínica de readaptación SLP)
        │                                          │
        │  Construye, mantiene, evoluciona el SaaS │
@@ -54,9 +54,9 @@ Cubre:
 
 **Reglas:**
 
-- Si el costo real es **menor** al estimado → se factura el real (no se queda Reha.mx con el delta).
+- Si el costo real es **menor** al estimado → se factura el real (no se queda Rehai con el delta).
 - Si el costo real es **mayor** → se ajusta la cuota con 30 días de aviso, sin penalización por terminación.
-- Reha.mx muestra desglose mensual transparente en el portal admin del tenant.
+- Rehai muestra desglose mensual transparente en el portal admin del tenant.
 
 ### Lo que NO paga MoveWell
 
@@ -67,7 +67,7 @@ Cubre:
 - ❌ Cargos por usuarios adicionales (fisios, recepcionistas, pacientes).
 - ❌ Cargos por almacenamiento dentro de cuotas razonables.
 
-### Lo que paga Reha.mx (KonectAI cubre vía Antonio)
+### Lo que paga Rehai (KonectAI cubre vía Antonio)
 
 - Desarrollo inicial completo (las 7 fases del Master Plan).
 - Mantenimiento, bug fixes, updates de seguridad.
@@ -83,10 +83,10 @@ Como cliente fundador #1, MoveWell recibe **de por vida** (mientras opere como c
 
 ### Acceso al producto
 
-- ✅ **Uso ilimitado** del SaaS Reha.mx sin costo de licencia.
+- ✅ **Uso ilimitado** del SaaS Rehai sin costo de licencia.
 - ✅ Todos los módulos actuales y futuros incluidos sin costo extra.
 - ✅ Sin límite de pacientes, fisios, sucursales, citas, almacenamiento (dentro de uso razonable).
-- ✅ Custom domain (`app.movewell.mx`) o subdomain (`movewell.reha.mx`) a elección.
+- ✅ Custom domain (`app.movewell.mx`) o subdomain (`movewell.rehai.app`) a elección.
 
 ### Branding y configuración
 
@@ -105,17 +105,17 @@ Como cliente fundador #1, MoveWell recibe **de por vida** (mientras opere como c
 
 - ✅ **3 features priorizadas por año** dentro del alcance funcional del SaaS, sin costo.
 - ✅ Acceso anticipado (beta) a features nuevas.
-- ✅ Voz directa en quarterly product reviews de Reha.mx.
+- ✅ Voz directa en quarterly product reviews de Rehai.
 
 ### Reconocimiento como fundador
 
-- ✅ Mención como "Cliente Fundador" en la web pública de Reha.mx (opcional, requiere consentimiento).
+- ✅ Mención como "Cliente Fundador" en la web pública de Rehai (opcional, requiere consentimiento).
 - ✅ Caso de éxito documentado para marketing (con datos anonimizados).
-- ✅ Logo "Powered by Reha.mx" en el portal del paciente — opcional, MoveWell decide si quiere mostrarlo.
+- ✅ Logo "Powered by Rehai" en el portal del paciente — opcional, MoveWell decide si quiere mostrarlo.
 
 ### Garantías de continuidad
 
-- ✅ Si Reha.mx descontinúa el servicio, **export completo de datos en JSON + PDF** sin costo, dentro de 30 días.
+- ✅ Si Rehai descontinúa el servicio, **export completo de datos en JSON + PDF** sin costo, dentro de 30 días.
 - ✅ Aviso de 6 meses si se discontinúa el SaaS (no es un riesgo cercano, pero se garantiza por escrito).
 
 ---
@@ -124,11 +124,11 @@ Como cliente fundador #1, MoveWell recibe **de por vida** (mientras opere como c
 
 Para que el modelo funcione como SaaS sostenible:
 
-- ❌ **Código fuente** — propiedad exclusiva de Reha.mx S.A.P.I.
-- ❌ **Equity** en Reha.mx ni KonectAI.
+- ❌ **Código fuente** — propiedad exclusiva de Rehai S.A.P.I.
+- ❌ **Equity** en Rehai ni KonectAI.
 - ❌ **Revenue share** sobre clientes futuros del SaaS.
 - ❌ **Derecho de comercializar** o sublicenciar el SaaS a terceros.
-- ❌ **Exclusividad geográfica** — Reha.mx puede vender a otras clínicas en SLP.
+- ❌ **Exclusividad geográfica** — Rehai puede vender a otras clínicas en SLP.
 
 Estos son los puntos donde se sostiene la sostenibilidad del SaaS. Si MoveWell entiende que está recibiendo un valor enorme (acceso vitalicio gratis a un sistema que vale $500k+ desarrollar y miles de pesos al mes mantener), no debería ser problema.
 
@@ -150,11 +150,11 @@ Estos son los puntos donde se sostiene la sostenibilidad del SaaS. Si MoveWell e
 
 **Ahorro real para MoveWell en 5 años: ~$966,000 MXN** + producto actualizado vs producto envejecido.
 
-**Lo que cede MoveWell:** propiedad del código, que en la práctica nunca van a usar (necesitarían un equipo de desarrollo para mantenerlo; preferible que lo haga Reha.mx).
+**Lo que cede MoveWell:** propiedad del código, que en la práctica nunca van a usar (necesitarían un equipo de desarrollo para mantenerlo; preferible que lo haga Rehai).
 
 ---
 
-## 📊 Por qué este modelo es ganador para Reha.mx
+## 📊 Por qué este modelo es ganador para Rehai
 
 1. **Cliente real desde día 1** sin tener que cerrar venta inicial. Validación de producto en campo real.
 2. **Caso de éxito** documentado para vender al cliente #2.
@@ -167,7 +167,7 @@ Estos son los puntos donde se sostiene la sostenibilidad del SaaS. Si MoveWell e
 
 ## 🏛️ Estructura legal
 
-### Reha.mx S.A.P.I. de C.V. (en formación)
+### Rehai S.A.P.I. de C.V. (en formación)
 
 **Sociedad Anónima Promotora de Inversión de Capital Variable** — figura mexicana ideal para SaaS, permite múltiples accionistas, levantamiento de capital futuro y emisión de acciones diferenciadas.
 
@@ -189,19 +189,19 @@ Estos son los puntos donde se sostiene la sostenibilidad del SaaS. Si MoveWell e
 
 **Costo aproximado de constitución:** $15,000-25,000 MXN (notario + registro + permisos SAT). Tiempo: 4-6 semanas.
 
-### Relación KonectAI ↔ Reha.mx
+### Relación KonectAI ↔ Rehai
 
-**Opción A — Recomendada: Reha.mx contrata a KonectAI como proveedor de desarrollo**
+**Opción A — Recomendada: Rehai contrata a KonectAI como proveedor de desarrollo**
 
-- KonectAI factura desarrollo + mantenimiento a Reha.mx.
-- Reha.mx es la dueña del SaaS y de la relación con MoveWell.
-- KonectAI sigue siendo agencia de desarrollo, con Reha.mx como uno de sus clientes principales.
-- Ventaja fiscal: separa los flujos de ingreso, permite escalar Reha.mx independiente.
+- KonectAI factura desarrollo + mantenimiento a Rehai.
+- Rehai es la dueña del SaaS y de la relación con MoveWell.
+- KonectAI sigue siendo agencia de desarrollo, con Rehai como uno de sus clientes principales.
+- Ventaja fiscal: separa los flujos de ingreso, permite escalar Rehai independiente.
 
-**Opción B: KonectAI hace work-for-hire y cede IP a Reha.mx**
+**Opción B: KonectAI hace work-for-hire y cede IP a Rehai**
 
 - Contrato de cesión de derechos patrimoniales de autor (Ley Federal del Derecho de Autor, México).
-- Más limpio en términos de propiedad pero implica que KonectAI no factura desarrollo, solo se compensa si Reha.mx paga dividendos.
+- Más limpio en términos de propiedad pero implica que KonectAI no factura desarrollo, solo se compensa si Rehai paga dividendos.
 
 **Recomendación firme: Opción A.** Es el modelo estándar de cualquier startup que terceriza desarrollo a una agencia hermana.
 
@@ -209,7 +209,7 @@ Estos son los puntos donde se sostiene la sostenibilidad del SaaS. Si MoveWell e
 
 ## 📜 Documentos legales necesarios
 
-### 1. Constitución de Reha.mx S.A.P.I. de C.V.
+### 1. Constitución de Rehai S.A.P.I. de C.V.
 
 - Ante notario público en SLP.
 - Estatutos sociales con objeto, capital, órganos de gobierno.
@@ -222,18 +222,18 @@ Carta de común acuerdo donde:
 
 - Se cancela la propuesta firmada del 21 de abril de 2026 por $510k MXN.
 - Las partes acuerdan que ningún anticipo ha sido cobrado (verificá esto antes).
-- Se sustituye por el contrato de Cliente Fundador de Reha.mx S.A.P.I.
+- Se sustituye por el contrato de Cliente Fundador de Rehai S.A.P.I.
 - Cero penalizaciones para ninguna parte.
 
-### 3. Contrato de Cliente Fundador Reha.mx ↔ MoveWell
+### 3. Contrato de Cliente Fundador Rehai ↔ MoveWell
 
 Plantilla en sección siguiente.
 
-### 4. Contrato de prestación de servicios Reha.mx ↔ KonectAI (opcional, Opción A)
+### 4. Contrato de prestación de servicios Rehai ↔ KonectAI (opcional, Opción A)
 
-KonectAI desarrolla y mantiene el SaaS para Reha.mx, factura mensual o por hito.
+KonectAI desarrolla y mantiene el SaaS para Rehai, factura mensual o por hito.
 
-### 5. NDA mutuo Reha.mx ↔ MoveWell
+### 5. NDA mutuo Rehai ↔ MoveWell
 
 Para protección de información clínica, comercial y operativa.
 
@@ -243,24 +243,24 @@ Para protección de información clínica, comercial y operativa.
 
 ```
 CONTRATO DE PRESTACIÓN DE SERVICIOS
-"Programa Cliente Fundador Reha.mx"
+"Programa Cliente Fundador Rehai"
 
-Entre Reha.mx S.A.P.I. de C.V. (en lo sucesivo "Reha.mx"),
+Entre Rehai S.A.P.I. de C.V. (en lo sucesivo "Rehai"),
 representada por Antonio Rodríguez de Tembleque,
 y MoveWell SLP (en lo sucesivo "MoveWell"),
 representada por [Nombre del representante legal].
 
 DECLARACIONES
 
-I.  Reha.mx es una sociedad mercantil constituida bajo las leyes mexicanas,
+I.  Rehai es una sociedad mercantil constituida bajo las leyes mexicanas,
     cuyo objeto es desarrollar, comercializar y operar la plataforma SaaS
-    "Reha.mx" para clínicas de readaptación deportiva y fisioterapia.
+    "Rehai" para clínicas de readaptación deportiva y fisioterapia.
 
 II. MoveWell es una clínica de readaptación deportiva y fisioterapia con
     operaciones en San Luis Potosí, S.L.P., México.
 
 III. Las partes han acordado que MoveWell será reconocido como
-     "Cliente Fundador" del SaaS Reha.mx, recibiendo acceso vitalicio sin
+     "Cliente Fundador" del SaaS Rehai, recibiendo acceso vitalicio sin
      costo de licencia, a cambio de su rol como tenant inicial validador
      del producto.
 
@@ -268,8 +268,8 @@ CLÁUSULAS
 
 PRIMERA — OBJETO
 
-Reha.mx otorga a MoveWell licencia de uso vitalicia, no transferible y
-no exclusiva sobre la plataforma SaaS Reha.mx, en los términos y con
+Rehai otorga a MoveWell licencia de uso vitalicia, no transferible y
+no exclusiva sobre la plataforma SaaS Rehai, en los términos y con
 los beneficios definidos en el presente contrato.
 
 SEGUNDA — DURACIÓN
@@ -284,8 +284,8 @@ La licencia no caduca por paso del tiempo.
 TERCERA — ALCANCE DE LA LICENCIA
 
 MoveWell tendrá acceso a:
-(a) Todos los módulos vigentes del SaaS Reha.mx en el momento de la firma.
-(b) Todos los módulos y features que Reha.mx libere en el futuro,
+(a) Todos los módulos vigentes del SaaS Rehai en el momento de la firma.
+(b) Todos los módulos y features que Rehai libere en el futuro,
     sin costo adicional, dentro del alcance funcional del producto general.
 (c) Branding personalizado: logo, colores, dominio (subdomain o custom).
 (d) Catálogos clínicos editables.
@@ -300,7 +300,7 @@ parámetros de uso razonable propios del giro de MoveWell.
 
 CUARTA — CUOTA MENSUAL OPERATIVA
 
-MoveWell pagará a Reha.mx una cuota mensual de pass-through de
+MoveWell pagará a Rehai una cuota mensual de pass-through de
 costos operativos por la cantidad de $3,500 MXN (tres mil quinientos
 pesos 00/100 M.N.) más IVA, ajustable a costos reales.
 
@@ -317,16 +317,16 @@ con desglose):
 - Migraciones puntuales de datos posteriores al go-live.
 - Servicios premium de terceros que MoveWell solicite explícitamente.
 
-Reha.mx publicará desglose mensual transparente en el panel admin del
+Rehai publicará desglose mensual transparente en el panel admin del
 tenant MoveWell. Si los costos reales son menores al estimado, se factura
-el real. Si son mayores, Reha.mx avisará con 30 días de anticipación
+el real. Si son mayores, Rehai avisará con 30 días de anticipación
 antes de ajustar la cuota.
 
 QUINTA — PROPIEDAD INTELECTUAL
 
 5.1. El código fuente, marca, dominio, diseño, base de datos del producto
-     y propiedad intelectual de la plataforma Reha.mx son propiedad
-     exclusiva de Reha.mx S.A.P.I. de C.V.
+     y propiedad intelectual de la plataforma Rehai son propiedad
+     exclusiva de Rehai S.A.P.I. de C.V.
 
 5.2. MoveWell recibe únicamente licencia de uso, no transmisión de
      propiedad. MoveWell no podrá:
@@ -336,8 +336,8 @@ QUINTA — PROPIEDAD INTELECTUAL
      (d) Usar el SaaS para ofrecer servicios a terceros distintos de
          MoveWell y sus pacientes directos.
 
-5.3. La marca "Reha.mx" puede aparecer de forma discreta ("Powered by
-     Reha.mx") en el portal del paciente. MoveWell puede solicitar que
+5.3. La marca "Rehai" puede aparecer de forma discreta ("Powered by
+     Rehai") en el portal del paciente. MoveWell puede solicitar que
      no aparezca, sin costo.
 
 SEXTA — PROPIEDAD DE LOS DATOS
@@ -345,16 +345,16 @@ SEXTA — PROPIEDAD DE LOS DATOS
 6.1. Los datos clínicos, comerciales, operativos y de pacientes generados
      por MoveWell dentro del SaaS son **propiedad exclusiva de MoveWell**.
 
-6.2. Reha.mx actúa como encargado del tratamiento de datos personales
+6.2. Rehai actúa como encargado del tratamiento de datos personales
      conforme a LFPDPPP. No usa los datos para fines distintos a la
      prestación del servicio.
 
-6.3. Reha.mx puede usar **estadísticas anonimizadas y agregadas** de uso
+6.3. Rehai puede usar **estadísticas anonimizadas y agregadas** de uso
      del producto (ej: "X clínicas usan el módulo Y") para mejorar el
      producto y comunicación de marketing, sin identificar a MoveWell ni
      a sus pacientes.
 
-6.4. En caso de terminación, Reha.mx entrega a MoveWell la totalidad de
+6.4. En caso de terminación, Rehai entrega a MoveWell la totalidad de
      sus datos en formato JSON + PDFs (estudios médicos, CFDIs) dentro
      de los 30 días naturales siguientes, sin costo.
 
@@ -367,17 +367,17 @@ por 5 años después de su terminación.
 OCTAVA — RECONOCIMIENTO COMO CLIENTE FUNDADOR
 
 Con consentimiento explícito de MoveWell:
-(a) Reha.mx puede mencionar a MoveWell como "Cliente Fundador" en su
+(a) Rehai puede mencionar a MoveWell como "Cliente Fundador" en su
     web pública.
-(b) Reha.mx puede usar logo de MoveWell en página de clientes.
-(c) Reha.mx puede crear caso de éxito con datos anonimizados.
+(b) Rehai puede usar logo de MoveWell en página de clientes.
+(c) Rehai puede crear caso de éxito con datos anonimizados.
 
 MoveWell puede revocar este consentimiento en cualquier momento por
 escrito, sin afectar el resto del contrato.
 
 NOVENA — NIVELES DE SERVICIO
 
-9.1. Reha.mx mantendrá disponibilidad mensual ≥ 99.5% (excluyendo
+9.1. Rehai mantendrá disponibilidad mensual ≥ 99.5% (excluyendo
      ventanas de mantenimiento programado).
 
 9.2. Tiempos de respuesta:
@@ -397,14 +397,14 @@ DÉCIMA — TERMINACIÓN
 10.1. MoveWell puede terminar este contrato en cualquier momento con
       aviso de 60 días naturales, sin penalización.
 
-10.2. Reha.mx puede terminar este contrato si:
+10.2. Rehai puede terminar este contrato si:
       (a) MoveWell no paga la cuota mensual por más de 60 días.
       (b) MoveWell viola la cláusula QUINTA (propiedad intelectual).
-      (c) Reha.mx S.A.P.I. cesa operaciones (con 6 meses de aviso a
+      (c) Rehai S.A.P.I. cesa operaciones (con 6 meses de aviso a
           MoveWell + entrega de datos).
 
 10.3. Al terminar:
-      - Reha.mx entrega datos completos en 30 días.
+      - Rehai entrega datos completos en 30 días.
       - MoveWell deja de tener acceso a la plataforma.
       - Sobreviven cláusulas SÉPTIMA (confidencialidad) y SEXTA (datos).
 
@@ -424,7 +424,7 @@ por mutuo acuerdo.
 Firmas:
 
 _______________________            _______________________
-Reha.mx S.A.P.I. de C.V.           MoveWell SLP
+Rehai S.A.P.I. de C.V.           MoveWell SLP
 Antonio Rodríguez de Tembleque     [Nombre y cargo]
 Representante Legal                 Representante Legal
 
@@ -455,20 +455,20 @@ Nombre y firma                      Nombre y firma
 
 ### Semanas 1-4
 
-- [ ] Iniciar constitución de Reha.mx S.A.P.I. de C.V. con notario.
-- [ ] Registrar marca "Reha.mx" en IMPI (México) — tomar antes que alguien.
-- [ ] Registrar dominios: `reha.mx`, `reha-mx.com`, `gestionarreha.mx`.
+- [ ] Iniciar constitución de Rehai S.A.P.I. de C.V. con notario.
+- [ ] Registrar marca "Rehai" en IMPI (México) — tomar antes que alguien.
+- [ ] Registrar dominios: `rehai.app`, `reha-mx.com`, `gestionarrehai.app`.
 - [ ] Redactar y revisar legalmente los 3 contratos:
   - Cancelación de propuesta original.
   - Contrato Cliente Fundador.
-  - Contrato KonectAI ↔ Reha.mx (si Opción A).
+  - Contrato KonectAI ↔ Rehai (si Opción A).
 
 ### Semana 5-6
 
 - [ ] Constitución finalizada, RFC obtenido.
-- [ ] Cuenta bancaria empresarial Reha.mx.
+- [ ] Cuenta bancaria empresarial Rehai.
 - [ ] Firmas de los 3 contratos.
-- [ ] Primer pago de cuota mensual de MoveWell a Reha.mx.
+- [ ] Primer pago de cuota mensual de MoveWell a Rehai.
 
 ### Semana 6+
 
@@ -476,7 +476,7 @@ Nombre y firma                      Nombre y firma
 
 ⚠️ **Crítico:** No empezar a escribir código del SaaS hasta que la sociedad esté constituida y los contratos firmados. De lo contrario, el código se escribe bajo KonectAI y hay que cederlo después con todo el papeleo extra.
 
-**Workaround si querés arrancar antes:** firmá un acuerdo provisional donde KonectAI desarrolla "por cuenta de Reha.mx S.A.P.I. en formación" y se cede automáticamente al constituirse. Esto es estándar y limpio si tu notario lo soporta.
+**Workaround si querés arrancar antes:** firmá un acuerdo provisional donde KonectAI desarrolla "por cuenta de Rehai S.A.P.I. en formación" y se cede automáticamente al constituirse. Esto es estándar y limpio si tu notario lo soporta.
 
 ---
 
@@ -488,7 +488,7 @@ Nombre y firma                      Nombre y firma
 >
 > Antes de arrancar el proyecto quiero proponerles algo que les va a sonar mejor que la propuesta original.
 >
-> En lugar de cobrarles $510,000 MXN por desarrollar un sistema custom, vamos a hacer algo más interesante para los dos. Estoy creando una empresa nueva, **Reha.mx S.A.P.I.**, dedicada exclusivamente a desarrollar el SaaS para clínicas de readaptación. Quiero que MoveWell sea el **Cliente Fundador #1**.
+> En lugar de cobrarles $510,000 MXN por desarrollar un sistema custom, vamos a hacer algo más interesante para los dos. Estoy creando una empresa nueva, **Rehai S.A.P.I.**, dedicada exclusivamente a desarrollar el SaaS para clínicas de readaptación. Quiero que MoveWell sea el **Cliente Fundador #1**.
 >
 > Esto significa:
 >
@@ -498,7 +498,7 @@ Nombre y firma                      Nombre y firma
 > - **Soporte prioritario** y silla en el roadmap (3 features por año decididas por ustedes).
 > - **Sus datos siguen siendo suyos.** Si algún día deciden irse, exportamos todo en 30 días.
 >
-> A cambio: ustedes operan con el sistema, nos dan feedback, y nos permiten contar su caso de éxito a futuras clínicas que sí pagarán suscripción normal. El código y la marca quedan de Reha.mx, pero ustedes tienen el producto para siempre sin pagar licencia.
+> A cambio: ustedes operan con el sistema, nos dan feedback, y nos permiten contar su caso de éxito a futuras clínicas que sí pagarán suscripción normal. El código y la marca quedan de Rehai, pero ustedes tienen el producto para siempre sin pagar licencia.
 >
 > En 5 años pagan ~$210,000 MXN en lugar de $1,176,000 MXN, y reciben un producto que se actualiza solo, mientras que el sistema custom se quedaría congelado.
 >
@@ -516,7 +516,7 @@ Vas al **Master Plan + Fase 0 prompt** que ya te pasé, sin cambios. La arquitec
 
 Es muy poco probable porque les conviene radicalmente, pero si pasa:
 
-**Opción fallback:** volver al contrato original ($510k + transferencia de código), construir un sistema **mono-tenant** custom para MoveWell, y arrancar Reha.mx S.A.P.I. después con otro cliente fundador. El plan técnico cambia significativamente (todo el master plan se recorta al sacar multi-tenancy).
+**Opción fallback:** volver al contrato original ($510k + transferencia de código), construir un sistema **mono-tenant** custom para MoveWell, y arrancar Rehai S.A.P.I. después con otro cliente fundador. El plan técnico cambia significativamente (todo el master plan se recorta al sacar multi-tenancy).
 
 **Más probable:** MoveWell pide ajustes (más features priorizadas/año, exclusividad geográfica de 12 meses, descuento mayor en mensual). Negociá: la única línea no negociable es la propiedad del código.
 

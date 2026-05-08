@@ -17,11 +17,11 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Reha.mx',
-    template: '%s · Reha.mx',
+    default: 'Rehai',
+    template: '%s · Rehai',
   },
   description: 'Sistema operativo para clínicas de readaptación deportiva en México.',
-  applicationName: 'Reha.mx',
+  applicationName: 'Rehai',
 };
 
 interface RootLayoutProps {

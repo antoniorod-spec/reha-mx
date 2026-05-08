@@ -105,7 +105,7 @@ Fase 2: Expediente clínico electrónico. Lee CLAUDE.md, docs/modulo-agenda.md, 
 ### Modelo de datos
 - `clinical_records` — un registro por paciente, history de lesiones previas y cirugías.
 - `assessments` — evaluación (Y-Balance, Hop Test, SEBT, goniometría, dinamometría, EVA, DASH, LEFS).
-- `assessment_templates_global` — 8 escalas estándar precargadas (Reha.mx).
+- `assessment_templates_global` — 8 escalas estándar precargadas (Rehai).
 - `assessment_templates_tenant` — overrides + plantillas custom del tenant.
 - `assessment_results` — resultados con valores numéricos por campo + asimetría calculada.
 - `soap_notes` — notas SOAP por sesión, vinculadas a `appointment_id`.
@@ -282,13 +282,13 @@ Portado del prototipo con divergencias donde shadcn/ui o un patrón móvil mejor
 
 ### Videos de ejercicios
 - Storage en Mux (recomendado) o Supabase Storage + Mux player para mobile-friendly.
-- Subir video desde panel admin (Reha.mx super-admin) → biblioteca global.
+- Subir video desde panel admin (Rehai super-admin) → biblioteca global.
 - Tenant puede subir videos custom a su biblioteca local.
 - Compresión y preview generado automáticamente.
 
 ### Branding por tenant en portal
 - Logo y accent color del tenant en topbar y splash.
-- Subdomain dedicado: `movewell.reha.mx/portal` o custom domain.
+- Subdomain dedicado: `movewell.rehai.app/portal` o custom domain.
 - Email "from" usa `tenant_branding.email_from`.
 
 ### Tests
@@ -423,7 +423,7 @@ Manual en `docs/manual-usuario-{rol}.md`.
 ### Go-live
 - Plan rollback documentado (snapshot DB + Vercel rollback).
 - Checklist pre-go-live (variables prod, certs, dominios, backups, monitoreo).
-- DNS cutover de `movewell.reha.mx` (o custom domain).
+- DNS cutover de `movewell.rehai.app` (o custom domain).
 - Anuncio a pacientes existentes con guía de onboarding al portal.
 - Provisioning automatizado del tenant `movewell` con su branding final.
 
@@ -481,7 +481,7 @@ Plan detallado + dudas. Comunicación con cliente es prioridad.
 
 ## 🎯 Post Fase 6 — preparación comercial
 
-Ya en producción con MoveWell, el SaaS Reha.mx tiene:
+Ya en producción con MoveWell, el SaaS Rehai tiene:
 
 - Multi-tenant funcional probado en pen-test.
 - Provisioning automatizado de nuevos tenants.

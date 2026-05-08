@@ -1,6 +1,6 @@
-# Reha.mx — Plan maestro técnico
+# Rehai — Plan maestro técnico
 
-> Plan global del proyecto Reha.mx (SaaS para clínicas de readaptación deportiva).
+> Plan global del proyecto Rehai (SaaS para clínicas de readaptación deportiva).
 > **MoveWell SLP es el cliente pivote** — financia el desarrollo y valida el producto.
 > Léelo **antes** de cualquier prompt de fase.
 
@@ -13,9 +13,9 @@
 
 ## 0. Posicionamiento estratégico
 
-### 0.1 Qué es Reha.mx
+### 0.1 Qué es Rehai
 
-**Reha.mx es el sistema operativo para clínicas de readaptación deportiva en México.** Vertical SaaS B2B con:
+**Rehai es el sistema operativo para clínicas de readaptación deportiva en México.** Vertical SaaS B2B con:
 
 - App clínica (fisios, recepción, dirección).
 - Portal paciente PWA con plan, citas, chat y wearables.
@@ -24,7 +24,7 @@
 
 ### 0.2 MoveWell como Cliente Fundador
 
-**Modelo definido:** MoveWell SLP es el **Cliente Fundador #1** del SaaS Reha.mx.
+**Modelo definido:** MoveWell SLP es el **Cliente Fundador #1** del SaaS Rehai.
 
 - ❌ **No paga** los $510k MXN de la propuesta original (se cancela).
 - ✅ **Paga solo $3,500 MXN/mes** pass-through de costos operativos reales (infra, WhatsApp, CFDI).
@@ -33,7 +33,7 @@
 - ✅ **Sus datos son suyos** (LFPDPPP), exportables en JSON + PDFs si se va.
 - ❌ **No recibe código fuente, no recibe equity, no recibe revenue share.**
 
-A cambio Reha.mx obtiene:
+A cambio Rehai obtiene:
 
 - Cliente real desde día 1 que valida el producto.
 - Caso de éxito para vender al cliente #2.
@@ -43,11 +43,11 @@ A cambio Reha.mx obtiene:
 
 ⚠️ **No empezar Fase 0 hasta que:**
 
-1. Reha.mx S.A.P.I. de C.V. esté constituida (~4-6 semanas).
-2. Contrato Cliente Fundador esté firmado entre Reha.mx y MoveWell.
+1. Rehai S.A.P.I. de C.V. esté constituida (~4-6 semanas).
+2. Contrato Cliente Fundador esté firmado entre Rehai y MoveWell.
 3. Propuesta original KonectAI ↔ MoveWell ($510k) esté formalmente cancelada.
 
-**Workaround:** firmar acuerdo provisional "KonectAI desarrolla por cuenta de Reha.mx S.A.P.I. en formación" para arrancar técnicamente antes de tener la sociedad constituida.
+**Workaround:** firmar acuerdo provisional "KonectAI desarrolla por cuenta de Rehai S.A.P.I. en formación" para arrancar técnicamente antes de tener la sociedad constituida.
 
 ### 0.3 Roadmap comercial post-MoveWell
 
@@ -88,7 +88,7 @@ reha-mx (repo)
 2. **Hoy:** crear branch `app-real` desde `main`. Borrar todo (excepto `.git`, `LICENSE`, `.gitignore`, `vercel.json`). Empezar Next.js limpio.
 3. **Cuando `app-real` esté en Fase 0 cerrada:** se hace PR `app-real → main`. La nueva `main` queda con el SaaS real.
 4. **`prototype`** queda accesible en `reha-mx-prototype.vercel.app` como demo visual viva.
-5. **`main` (SaaS real)** queda en `reha.mx` o `app.reha.mx` cuando haya dominio.
+5. **`main` (SaaS real)** queda en `rehai.app` o `app.rehai.app` cuando haya dominio.
 
 Vercel: el proyecto actual (`reha-mx.vercel.app`) se renombra a `reha-mx-prototype` y apunta a branch `prototype`. Se crea proyecto nuevo `reha-mx` apuntando a `main` (futura) / `app-real` (hoy).
 
@@ -97,7 +97,7 @@ Vercel: el proyecto actual (`reha-mx.vercel.app`) se renombra a `reha-mx-prototy
 ```
 reha-mx/
 ├── app/                          ← Next.js 15 app
-│   ├── (marketing)/              ← landing pública reha.mx
+│   ├── (marketing)/              ← landing pública rehai.app
 │   ├── (app)/                    ← app clínica (fisios, recepción, dirección)
 │   ├── (portal)/                 ← portal paciente PWA
 │   └── api/
@@ -123,27 +123,27 @@ reha-mx/
 
 ### 2.1 Stack final
 
-| Capa             | Decisión                              | Por qué                                                                                              |
-| ---------------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| **Framework**    | Next.js 15 (App Router)               | SSR para SEO público (reha.mx landing), RSC para portales pesados en datos, mismo runtime sirve PWA. |
-| **Runtime**      | Node 20 LTS                           | Estable, Vercel-friendly, Edge runtime donde aplique.                                                |
-| **TS**           | TypeScript estricto                   | `strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`.                                  |
-| **UI**           | Tailwind v4 + shadcn/ui (selectivo)   | Tokens del prototipo via CSS vars + `@theme`.                                                        |
-| **DB**           | Postgres vía Supabase                 | Único managed Postgres con RLS, auth, storage, realtime.                                             |
-| **ORM**          | **Drizzle**                           | Genera SQL transparente, compatible con RLS, sin abstracción que choque con policies.                |
-| **Auth**         | Supabase Auth                         | Magic link + 2FA TOTP. Roles vía custom claims + RLS.                                                |
-| **Storage**      | Supabase Storage                      | Estudios médicos cifrados, signed URLs ≤ 1h.                                                         |
-| **Server state** | TanStack Query v5                     | Cache, optimistic updates, infinite queries.                                                         |
-| **Forms**        | React Hook Form + Zod                 | Validación end-to-end compartida server/client.                                                      |
-| **Pagos**        | Stripe + adapter pattern              | Stripe default; adapter MercadoPago/Conekta listo.                                                   |
-| **CFDI**         | Facturama API                         | Como propuesta. SDK propio en `lib/facturama/`.                                                      |
-| **WhatsApp**     | Evolution API (KonectAI)              | Más barato y flexible que Meta Cloud para flujos n8n.                                                |
-| **Orquestación** | n8n self-hosted                       | Recordatorios, NPS, reseñas. Nunca lógica crítica.                                                   |
-| **Email**        | Resend                                | Magic links, recibos, facturas.                                                                      |
-| **Hosting**      | Vercel Pro + Supabase Pro             | Como propuesta.                                                                                      |
-| **Monitoreo**    | Sentry + Vercel Analytics + Logtail   | Errores + performance + logs.                                                                        |
-| **Tests**        | Vitest + Playwright + Testing Library | Unit + E2E + componentes.                                                                            |
-| **CI**           | GitHub Actions                        | Lint + typecheck + test + preview Vercel.                                                            |
+| Capa             | Decisión                              | Por qué                                                                                                |
+| ---------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| **Framework**    | Next.js 15 (App Router)               | SSR para SEO público (rehai.app landing), RSC para portales pesados en datos, mismo runtime sirve PWA. |
+| **Runtime**      | Node 20 LTS                           | Estable, Vercel-friendly, Edge runtime donde aplique.                                                  |
+| **TS**           | TypeScript estricto                   | `strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`.                                    |
+| **UI**           | Tailwind v4 + shadcn/ui (selectivo)   | Tokens del prototipo via CSS vars + `@theme`.                                                          |
+| **DB**           | Postgres vía Supabase                 | Único managed Postgres con RLS, auth, storage, realtime.                                               |
+| **ORM**          | **Drizzle**                           | Genera SQL transparente, compatible con RLS, sin abstracción que choque con policies.                  |
+| **Auth**         | Supabase Auth                         | Magic link + 2FA TOTP. Roles vía custom claims + RLS.                                                  |
+| **Storage**      | Supabase Storage                      | Estudios médicos cifrados, signed URLs ≤ 1h.                                                           |
+| **Server state** | TanStack Query v5                     | Cache, optimistic updates, infinite queries.                                                           |
+| **Forms**        | React Hook Form + Zod                 | Validación end-to-end compartida server/client.                                                        |
+| **Pagos**        | Stripe + adapter pattern              | Stripe default; adapter MercadoPago/Conekta listo.                                                     |
+| **CFDI**         | Facturama API                         | Como propuesta. SDK propio en `lib/facturama/`.                                                        |
+| **WhatsApp**     | Evolution API (KonectAI)              | Más barato y flexible que Meta Cloud para flujos n8n.                                                  |
+| **Orquestación** | n8n self-hosted                       | Recordatorios, NPS, reseñas. Nunca lógica crítica.                                                     |
+| **Email**        | Resend                                | Magic links, recibos, facturas.                                                                        |
+| **Hosting**      | Vercel Pro + Supabase Pro             | Como propuesta.                                                                                        |
+| **Monitoreo**    | Sentry + Vercel Analytics + Logtail   | Errores + performance + logs.                                                                          |
+| **Tests**        | Vitest + Playwright + Testing Library | Unit + E2E + componentes.                                                                              |
+| **CI**           | GitHub Actions                        | Lint + typecheck + test + preview Vercel.                                                              |
 
 ### 2.2 Lo que NO va
 
@@ -211,11 +211,11 @@ Un solo Postgres, datos aislados por **`organization_id`** vía RLS. Cada tenant
 
 Tres mecanismos, en orden de precedencia:
 
-1. **Subdominio:** `movewell.reha.mx` → `tenant_slug = movewell`.
-2. **Path prefix** (fallback dev): `reha.mx/t/movewell`.
+1. **Subdominio:** `movewell.rehai.app` → `tenant_slug = movewell`.
+2. **Path prefix** (fallback dev): `rehai.app/t/movewell`.
 3. **Custom domain:** `app.movewell.mx` → resuelve a `tenant_slug = movewell` vía tabla `tenant_domains`.
 
-Middleware Next.js inspecciona host + path → resuelve `tenant_slug` → consulta `organizations` → set en context. Si no hay match → 404 público o redirect a `reha.mx`.
+Middleware Next.js inspecciona host + path → resuelve `tenant_slug` → consulta `organizations` → set en context. Si no hay match → 404 público o redirect a `rehai.app`.
 
 ### 3.3 Branding por tenant
 
@@ -232,14 +232,14 @@ CSS variables se inyectan en `<html data-tenant="movewell">` desde el server, as
 
 ### 3.4 Datos compartidos vs por tenant
 
-| Datos                  | Scope                                  | Notas                                                                                |
-| ---------------------- | -------------------------------------- | ------------------------------------------------------------------------------------ |
-| `users` (auth.users)   | Global (Supabase)                      | Un user puede pertenecer a múltiples orgs vía `members`.                             |
-| `exercise_library`     | Global (Reha.mx) + override por tenant | Biblioteca base + ejercicios custom del tenant.                                      |
-| `assessment_templates` | Global + override                      | 8 escalas estándar (Y-Balance, EVA, etc.) precargadas. Tenant puede crear las suyas. |
-| `protocols`            | Por tenant                             | Cada clínica define sus protocolos.                                                  |
-| `clinical_records`     | Por tenant                             | Aislamiento RLS estricto.                                                            |
-| `audit_logs`           | Por tenant                             | Append-only via trigger.                                                             |
+| Datos                  | Scope                                | Notas                                                                                |
+| ---------------------- | ------------------------------------ | ------------------------------------------------------------------------------------ |
+| `users` (auth.users)   | Global (Supabase)                    | Un user puede pertenecer a múltiples orgs vía `members`.                             |
+| `exercise_library`     | Global (Rehai) + override por tenant | Biblioteca base + ejercicios custom del tenant.                                      |
+| `assessment_templates` | Global + override                    | 8 escalas estándar (Y-Balance, EVA, etc.) precargadas. Tenant puede crear las suyas. |
+| `protocols`            | Por tenant                           | Cada clínica define sus protocolos.                                                  |
+| `clinical_records`     | Por tenant                           | Aislamiento RLS estricto.                                                            |
+| `audit_logs`           | Por tenant                           | Append-only via trigger.                                                             |
 
 ---
 
@@ -249,7 +249,7 @@ CSS variables se inyectan en `<html data-tenant="movewell">` desde el server, as
 
 ```
 app/
-├── (marketing)/                   ← reha.mx público
+├── (marketing)/                   ← rehai.app público
 │   ├── page.tsx                   ← landing del producto
 │   ├── precios/
 │   ├── clinicas/                  ← directorio público (opt-in por tenant)
@@ -276,7 +276,7 @@ app/
 │   ├── nutricion/
 │   └── yo/
 │
-├── (admin)/                       ← admin Reha.mx (super-admin KonectAI)
+├── (admin)/                       ← admin Rehai (super-admin KonectAI)
 │   ├── tenants/                   ← alta de clínicas
 │   ├── exercise-library/          ← biblioteca global
 │   └── billing/                   ← billing del SaaS (suscripciones de las clínicas)
@@ -295,7 +295,7 @@ app/
 - `organizations`, `tenant_domains`, `tenant_branding`, `tenant_subscriptions`
 - `members` (un user → muchas orgs con rol)
 - `exercise_library_global`, `assessment_templates_global`
-- `audit_logs_admin` (auditoría de Reha.mx super-admin)
+- `audit_logs_admin` (auditoría de Rehai super-admin)
 
 **Tablas por tenant (con `organization_id` + RLS):**
 
@@ -366,7 +366,7 @@ CREATE POLICY "audit_insert_only" ON audit_logs
 
 | Fase  | Semanas | Objetivo                                      | Demo verificable                                             |
 | ----- | ------- | --------------------------------------------- | ------------------------------------------------------------ |
-| **0** | S1–S2   | Discovery + bootstrap técnico + multi-tenancy | Login en `movewell.reha.mx`, ver dashboard vacío             |
+| **0** | S1–S2   | Discovery + bootstrap técnico + multi-tenancy | Login en `movewell.rehai.app`, ver dashboard vacío           |
 | **1** | S3–S6   | Agenda + CRM                                  | Crear cita, recordatorio WhatsApp 24h/2h, vista semana       |
 | **2** | S7–S10  | EMR clínico                                   | Expediente con SOAP, evaluaciones, consentimientos, estudios |
 | **3** | S11–S13 | Pagos + CFDI                                  | Cobro Stripe, CFDI Facturama, paquetes, membresías           |
@@ -492,7 +492,7 @@ Mapeados a CSS vars Tailwind v4:
 | Riesgo                                                                                       | Prob. | Impacto | Mitigación                                                                                                                                                                                                                                  |
 | -------------------------------------------------------------------------------------------- | ----- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | MoveWell rechaza modelo Cliente Fundador y exige cumplir propuesta original ($510k + código) | Baja  | Crítico | El modelo Cliente Fundador es radicalmente mejor para MoveWell ($966k de ahorro en 5 años + producto vivo). Si rechazan: fallback a sistema mono-tenant custom según propuesta original — replannear todo el master plan sin multi-tenancy. |
-| Reha.mx S.A.P.I. tarda más de 6 semanas en constituirse                                      | Media | Medio   | Acuerdo provisional "KonectAI por cuenta de Reha.mx en formación" para arrancar Fase 0 antes. Cesión automática al constituirse.                                                                                                            |
+| Rehai S.A.P.I. tarda más de 6 semanas en constituirse                                        | Media | Medio   | Acuerdo provisional "KonectAI por cuenta de Rehai en formación" para arrancar Fase 0 antes. Cesión automática al constituirse.                                                                                                              |
 | Multi-tenancy parcheado mal (filtraciones cross-tenant)                                      | Media | Crítico | RLS desde día 1, test E2E con 2 orgs en cada PR, auditoría de seguridad antes de tener segundo tenant.                                                                                                                                      |
 | Facturama API caída en hora pico                                                             | Media | Alto    | Cola de reintentos en n8n, CFDI bajo demanda con feedback.                                                                                                                                                                                  |
 | WhatsApp rate limit                                                                          | Media | Medio   | Distribución horaria, fallback SMS Twilio.                                                                                                                                                                                                  |
@@ -511,11 +511,11 @@ Mapeados a CSS vars Tailwind v4:
 - ¿Qué wearables son prioritarios? (todos vs solo Apple+Garmin).
 - ¿Equipo de isoinercia con API? (cambia alcance del expediente).
 - ¿Migración desde sistema previo o tabula rasa?
-- ¿MoveWell tiene logo y manual de marca propios o adopta branding Reha.mx?
-- ¿Subdominio `movewell.reha.mx` o custom domain `app.movewell.mx` desde día 1?
+- ¿MoveWell tiene logo y manual de marca propios o adopta branding Rehai?
+- ¿Subdominio `movewell.rehai.app` o custom domain `app.movewell.mx` desde día 1?
 - **Crítico — pre Fase 0:**
-  - ¿Reha.mx S.A.P.I. está constituida?
-  - ¿Contrato Cliente Fundador firmado entre Reha.mx y MoveWell?
+  - ¿Rehai S.A.P.I. está constituida?
+  - ¿Contrato Cliente Fundador firmado entre Rehai y MoveWell?
   - ¿Propuesta KonectAI ↔ MoveWell ($510k) formalmente cancelada (sin anticipo cobrado)?
 
 ---

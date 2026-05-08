@@ -1,7 +1,7 @@
 import { pgEnum, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 
 /**
- * Estado de suscripción de la organización al SaaS Reha.mx.
+ * Estado de suscripción de la organización al SaaS Rehai.
  * - founder: MoveWell SLP — Cliente Fundador, vitalicio sin licencia
  * - trial: prueba gratis (14 días default)
  * - active: pagando suscripción
@@ -19,12 +19,12 @@ export const subscriptionStatusEnum = pgEnum('subscription_status', [
 ]);
 
 /**
- * Tabla raíz multi-tenant. Cada clínica que usa Reha.mx es una organization.
+ * Tabla raíz multi-tenant. Cada clínica que usa Rehai es una organization.
  * Toda tabla con datos clínicos lleva organization_id + RLS.
  */
 export const organizations = pgTable('organizations', {
   id: uuid('id').defaultRandom().primaryKey(),
-  /** Slug único usado en subdominio: movewell.reha.mx → slug='movewell' */
+  /** Slug único usado en subdominio: movewell.rehai.app → slug='movewell' */
   slug: text('slug').notNull().unique(),
   name: text('name').notNull(),
   subscriptionStatus: subscriptionStatusEnum('subscription_status').notNull().default('trial'),

@@ -9,7 +9,7 @@
 ## 🎬 Mensaje a Claude Code
 
 ````
-Vamos a construir Reha.mx — SaaS B2B para clínicas de readaptación deportiva en México. MoveWell SLP es el cliente pivote (firmó propuesta KonectAI por $510k MXN, financia el desarrollo y es el primer tenant). Hoy ejecutamos la **Fase 0: Discovery + Bootstrap técnico + Multi-tenancy**.
+Vamos a construir Rehai — SaaS B2B para clínicas de readaptación deportiva en México. MoveWell SLP es el cliente pivote (firmó propuesta KonectAI por $510k MXN, financia el desarrollo y es el primer tenant). Hoy ejecutamos la **Fase 0: Discovery + Bootstrap técnico + Multi-tenancy**.
 
 ## Contexto
 
@@ -60,7 +60,7 @@ git mv src/*.jsx docs/prototype-reference/
 git mv components/*.jsx docs/prototype-reference/components/
 
 # Borrar archivos del prototipo que no aplican al SaaS
-rm -f index.html Reha.mx.html Reha.mx.bundled.html
+rm -f index.html Rehai.html Rehai.bundled.html
 rmdir src components 2>/dev/null || true
 
 # Mantener: vercel.json, .gitignore, LICENSE (si existe), README
@@ -182,7 +182,7 @@ pnpm add -D drizzle-kit
   - 3 users: 1 admin (Antonio), 1 fisio (Dra. Paulina Granados), 1 recepción (Lic. Karla Méndez)
 - **Org 2: Demo Rehab** (slug `demo`) — solo para tests de aislamiento, no para demo real
   - 1 sucursal, 1 admin, 1 fisio
-- Branding default Reha.mx para ambas (cyan #3FBCD4).
+- Branding default Rehai para ambas (cyan #3FBCD4).
 - Magic link funciona contra los users.
 
 `pnpm db:seed` debe ser idempotente.
@@ -240,11 +240,11 @@ Listame estas con respuestas por defecto sugeridas. Yo confirmo o corrijo:
 1. ¿Tenés acceso al repo `antoniorod-spec/reha-mx` con permisos de push? (necesitás credenciales git válidas).
 2. ¿Proyecto Supabase: vacío que YO creo, o lo creás vos via CLI?
 3. ¿Cuenta Vercel: la que ya tiene el prototipo (`antoniorod-spec`) o KonectAI org?
-4. ¿Dominio: `reha.mx` ya comprado? ¿`movewell.reha.mx` apunta a Vercel?
+4. ¿Dominio: `rehai.app` ya comprado? ¿`movewell.rehai.app` apunta a Vercel?
 5. ¿Tier Supabase: Free para empezar o Pro desde día 1?
 6. ¿Datos pre-existentes en MoveWell (Excel actual) o tabula rasa?
-7. ¿Branding final MoveWell: usa el de Reha.mx por defecto o tiene logo y paleta propios?
-8. **Crítico:** ¿Reha.mx S.A.P.I. de C.V. está constituida y el contrato Cliente Fundador ya está firmado con MoveWell? (Ver `04-modelo-cliente-fundador.md`). Si todavía no — ¿hay acuerdo provisional firmado "KonectAI desarrolla por cuenta de Reha.mx S.A.P.I. en formación"? Si tampoco, paramos hasta resolverlo.
+7. ¿Branding final MoveWell: usa el de Rehai por defecto o tiene logo y paleta propios?
+8. **Crítico:** ¿Rehai S.A.P.I. de C.V. está constituida y el contrato Cliente Fundador ya está firmado con MoveWell? (Ver `04-modelo-cliente-fundador.md`). Si todavía no — ¿hay acuerdo provisional firmado "KonectAI desarrolla por cuenta de Rehai S.A.P.I. en formación"? Si tampoco, paramos hasta resolverlo.
 
 ## Criterios de cierre de Fase 0
 

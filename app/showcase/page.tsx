@@ -25,9 +25,7 @@ export default function ShowcasePage() {
     <main className="mx-auto max-w-5xl px-6 py-8">
       <header className="mb-8 flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-text text-2xl font-semibold tracking-[-0.022em]">
-            Reha.mx — Showcase
-          </h1>
+          <h1 className="text-text text-2xl font-semibold tracking-[-0.022em]">Rehai — Showcase</h1>
           <p className="text-muted mt-1 text-sm">
             Primitives de diseño. Solo dev. Toggle dark/light arriba a la derecha.
           </p>

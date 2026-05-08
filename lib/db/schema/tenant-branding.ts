@@ -6,7 +6,7 @@ import { organizations } from './organizations';
  * Branding por tenant — colores, logo, "from email", nombre WhatsApp Business.
  * Se inyecta vía data-tenant en <html> + CSS vars (sin client JS).
  *
- * Default si no hay row: branding Reha.mx (cyan #3FBCD4, logo Reha.mx).
+ * Default si no hay row: branding Rehai (cyan #3FBCD4, logo Rehai).
  */
 export const tenantBranding = pgTable('tenant_branding', {
   organizationId: uuid('organization_id')
@@ -16,9 +16,9 @@ export const tenantBranding = pgTable('tenant_branding', {
   logoUrl: text('logo_url'),
   /** URL del logo dark theme (opcional, fallback a logo_url) */
   logoDarkUrl: text('logo_dark_url'),
-  /** Hex del accent — override del default Reha.mx cyan #3FBCD4 */
+  /** Hex del accent — override del default Rehai cyan #3FBCD4 */
   accentColor: text('accent_color').default('#3FBCD4'),
-  /** "from" de emails transaccionales — ej. 'citas@movewell.reha.mx' */
+  /** "from" de emails transaccionales — ej. 'citas@movewell.rehai.app' */
   emailFrom: text('email_from'),
   /** Nombre que verá el paciente en WhatsApp Business — ej. 'MoveWell SLP' */
   whatsappBusinessName: text('whatsapp_business_name'),

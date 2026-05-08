@@ -15,7 +15,7 @@ interface KpiProps {
 }
 
 /**
- * KPI de Reha.mx — número grande en mono, label arriba, delta + comparación abajo.
+ * KPI de Rehai — número grande en mono, label arriba, delta + comparación abajo.
  * DESIGN.md: 28-32px mono semibold con tracking tighter, label 11px medium muted.
  * Datos numéricos SIEMPRE en JetBrains Mono con tabular-nums.
  */

@@ -1,4 +1,4 @@
-# Reha.mx — Guía para Claude Code
+# Rehai — Guía para Claude Code
 
 > **Lee esto en cada sesión.** Es el contrato técnico del proyecto.
 > Plan completo en [`docs/00-MASTER-PLAN.md`](./docs/00-MASTER-PLAN.md).
@@ -9,16 +9,16 @@
 
 ## 🎯 Qué estamos construyendo
 
-**Reha.mx** = SaaS B2B vertical para clínicas de readaptación deportiva en México.
+**Rehai** = SaaS B2B vertical para clínicas de readaptación deportiva en México.
 
 **MoveWell SLP** = cliente pivote (firmó la propuesta KonectAI por $510k MXN, financia el desarrollo). Es el primer tenant que usaremos para validar todo. **No es producto a la medida** — es el SaaS, configurado para MoveWell.
 
 ### Tres aplicaciones lógicas en un solo Next.js
 
-1. **Marketing público** → `reha.mx` (landing del producto + booking público por tenant).
-2. **App clínica** → `{tenant}.reha.mx` (fisios, recepción, dirección).
-3. **Portal paciente PWA** → `{tenant}.reha.mx/portal` o `app.{tenant-domain}/portal`.
-4. **Admin Reha.mx** → `admin.reha.mx` (super-admin KonectAI: alta de tenants, biblioteca global, billing del SaaS).
+1. **Marketing público** → `rehai.app` (landing del producto + booking público por tenant).
+2. **App clínica** → `{tenant}.rehai.app` (fisios, recepción, dirección).
+3. **Portal paciente PWA** → `{tenant}.rehai.app/portal` o `app.{tenant-domain}/portal`.
+4. **Admin Rehai** → `admin.rehai.app` (super-admin KonectAI: alta de tenants, biblioteca global, billing del SaaS).
 
 7 módulos: Agenda · EMR · Pagos+CFDI · Portal · Wearables · Reportes · Settings.
 
@@ -32,11 +32,11 @@ Cliente real, datos sensibles de salud, **NOM-004-SSA3 + LFPDPPP + NOM-024** son
 
 ### Resolución de tenant
 
-- Subdominio: `movewell.reha.mx` → `tenant_slug = movewell`.
+- Subdominio: `movewell.rehai.app` → `tenant_slug = movewell`.
 - Path prefix (dev): `localhost:3000/t/movewell`.
 - Custom domain: `app.movewell.mx` → `tenant_domains` table.
 
-Middleware Next.js resuelve el tenant antes de cualquier render. Si no hay match → 404 público o redirect a `reha.mx`.
+Middleware Next.js resuelve el tenant antes de cualquier render. Si no hay match → 404 público o redirect a `rehai.app`.
 
 ### Reglas
 
@@ -77,10 +77,10 @@ Middleware Next.js resuelve el tenant antes de cualquier render. Si no hay match
 ```
 reha-mx/
 ├── app/
-│   ├── (marketing)/          ← reha.mx público
-│   ├── (app)/                ← {tenant}.reha.mx app clínica
+│   ├── (marketing)/          ← rehai.app público
+│   ├── (app)/                ← {tenant}.rehai.app app clínica
 │   ├── (portal)/             ← portal paciente PWA
-│   ├── (admin)/              ← admin.reha.mx super-admin
+│   ├── (admin)/              ← admin.rehai.app super-admin
 │   ├── api/
 │   │   ├── webhooks/         ← stripe, facturama, whatsapp
 │   │   └── cron/             ← Vercel cron

@@ -8,7 +8,7 @@ interface CardProps extends ComponentPropsWithoutRef<'div'> {
 }
 
 /**
- * Card base de Reha.mx — superficie con borde 1px sin sombra.
+ * Card base de Rehai — superficie con borde 1px sin sombra.
  * DESIGN.md: rounded-xl, border 1px en color border, sin shadows pesadas.
  */
 export function Card({ size = 'md', className, ...props }: CardProps) {

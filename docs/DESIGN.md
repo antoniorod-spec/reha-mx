@@ -1,4 +1,4 @@
-# Reha.mx — Sistema de diseño
+# Rehai — Sistema de diseño
 
 > Lee esto **antes** de tocar UI. Todo lo demás (componentes, vistas, copys) sigue de aquí.
 
@@ -6,7 +6,7 @@
 
 ## 🎨 Filosofía
 
-Reha.mx es una herramienta clínica seria para profesionales de la salud + un portal humano y cálido para pacientes en recuperación. El diseño debe sentirse:
+Rehai es una herramienta clínica seria para profesionales de la salud + un portal humano y cálido para pacientes en recuperación. El diseño debe sentirse:
 
 - **Clínico, no infantil.** Datos densos, tipografía técnica, mucho monoespaciado para números. Inspiración: Linear, Cron, Things, Apple Health.
 - **Confiable, no corporativo.** Nada de gradientes saturados, ilustraciones genéricas, ni stock photos. Casi todo es type + datos + line icons.

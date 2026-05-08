@@ -8,7 +8,7 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
 
-  // Reglas Reha.mx — alineadas con CLAUDE.md
+  // Reglas Rehai — alineadas con CLAUDE.md
   // El plugin `import` ya viene cargado por eslint-config-next/typescript;
   // solo declaramos los plugins extra (unused-imports) y configuramos sus reglas.
   {
