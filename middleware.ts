@@ -1,13 +1,23 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
+import { refreshAuthSession } from '@/lib/supabase/middleware';
 import { TENANT_SLUG_HEADER } from '@/lib/tenant/context';
 import { getOrganizationByCustomDomain } from '@/lib/tenant/queries';
-import { resolveTenant } from '@/lib/tenant/resolver';
+import { resolveTenant, type ResolveOutput } from '@/lib/tenant/resolver';
 
 /**
- * Middleware Next.js — resuelve el tenant en cada request y pasa el slug al
- * handler vía header `x-tenant-slug`. Server Components/Actions lo consumen
- * con `getTenantContext()` desde `@/lib/tenant/context`.
+ * Middleware Next.js — combina dos responsabilidades por request:
+ *
+ *   1. RESOLUCIÓN DE TENANT — mapea host/pathname a tenant_slug y lo expone
+ *      en el header `x-tenant-slug` para que Server Components/Actions lo lean
+ *      vía `getTenantContext()` (lib/tenant/context).
+ *
+ *   2. REFRESH DE SESIÓN SUPABASE — llama a refreshAuthSession() para mantener
+ *      cookies de auth frescas en cada request (rotación automática del access
+ *      token via refresh token cuando expira).
+ *
+ * Orden: primero construir la response con tenant headers + rewrites, después
+ * inyectar cookies de auth refreshadas en la misma response.
  *
  * Comportamiento por categoría del resolver:
  *   tenant         → setea header (rewrite /t/[slug]/* → /* si source=path)
@@ -23,7 +33,25 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
   const pathname = request.nextUrl.pathname;
 
   const result = resolveTenant({ host, pathname });
+  const response = await buildResponseForTenant(request, result);
 
+  // Si el tenant resolver devolvió 404 (custom-domain not found), no tiene
+  // sentido refrescar la sesión — la respuesta es terminal.
+  if (response.status === 404) return response;
+
+  await refreshAuthSession(request, response);
+  return response;
+}
+
+/**
+ * Construye la `NextResponse` según el tipo de tenant resuelto.
+ * Separada del middleware principal para que el flow de auth refresh
+ * sea siempre el último paso, independiente del routing.
+ */
+async function buildResponseForTenant(
+  request: NextRequest,
+  result: ResolveOutput,
+): Promise<NextResponse> {
   switch (result.type) {
     case 'tenant': {
       const requestHeaders = new Headers(request.headers);
