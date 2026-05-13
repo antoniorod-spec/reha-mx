@@ -39,16 +39,16 @@ const sql = postgres(DATABASE_URL, {
 interface TestResult {
   name: string;
   pass: boolean;
-  detail?: string;
+  detail: string;
 }
 
 const results: TestResult[] = [];
 
-function expect(name: string, condition: boolean, detail?: string): void {
+function expect(name: string, condition: boolean, detail = ''): void {
   results.push({ name, pass: condition, detail });
   const icon = condition ? '✓' : '✗';
   const color = condition ? '\x1b[32m' : '\x1b[31m';
-  console.log(`  ${color}${icon}\x1b[0m ${name}${detail !== undefined ? ` (${detail})` : ''}`);
+  console.log(`  ${color}${icon}\x1b[0m ${name}${detail.length > 0 ? ` (${detail})` : ''}`);
 }
 
 async function setup(): Promise<{ orgAId: string; orgBId: string }> {
@@ -88,13 +88,14 @@ async function asUser<T>(
   userId: string,
   fn: (tx: postgres.TransactionSql) => Promise<T>,
 ): Promise<T> {
+  // sql.begin tiene tipos complejos (UnwrapPromiseArray) — cast explícito
+  // porque sabemos que el callback devuelve Promise<T>.
   return sql.begin(async (tx) => {
-    // Simular JWT con sub = userId y role authenticated
     const claims = JSON.stringify({ sub: userId, role: 'authenticated' });
     await tx.unsafe(`SET LOCAL request.jwt.claims = '${claims.replace(/'/g, "''")}'`);
     await tx.unsafe(`SET LOCAL ROLE authenticated`);
     return fn(tx);
-  });
+  }) as Promise<T>;
 }
 
 async function run(): Promise<void> {
@@ -153,7 +154,7 @@ async function run(): Promise<void> {
           VALUES (${orgBId}, ${USER_A}, 'admin', 'active', now())
         `;
       });
-    } catch (error) {
+    } catch {
       insertBlocked = true;
     }
     expect('Insert cross-tenant bloqueado por RLS', insertBlocked);
@@ -169,7 +170,7 @@ async function run(): Promise<void> {
       const count = Number(auditRead[0]?.count ?? '0');
       auditBlocked = count === 0;
       auditDetail = `count=${count}`;
-    } catch (error) {
+    } catch {
       auditBlocked = true;
       auditDetail = 'query threw';
     }
@@ -187,7 +188,7 @@ async function run(): Promise<void> {
   } else {
     console.log(`\x1b[31m✗ FAILED: ${failed.length}/${results.length}\x1b[0m\n`);
     failed.forEach((f) =>
-      console.log(`  - ${f.name}${f.detail !== undefined ? ` (${f.detail})` : ''}`),
+      console.log(`  - ${f.name}${f.detail.length > 0 ? ` (${f.detail})` : ''}`),
     );
     process.exit(1);
   }

@@ -100,11 +100,16 @@ export function Setup2FAForm({ factorId, qrCode, secret, userEmail }: Setup2FAFo
         </div>
 
         <div className="border-border bg-surface-2 flex items-center justify-center rounded-md border p-4">
-          <div
-            aria-label="Código QR para escanear con la app Authenticator"
-            role="img"
+          {/*
+            Supabase devuelve qr_code como Data URI ("data:image/svg+xml;utf-8,<svg...>"),
+            no como SVG inline. Usamos <img> con eslint-disable porque next/image
+            no aporta optimización en Data URI (es SVG inline).
+          */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={qrCode}
+            alt="Código QR para escanear con la app Authenticator"
             className="size-48 rounded bg-white p-2"
-            dangerouslySetInnerHTML={{ __html: qrCode }}
           />
         </div>
 
