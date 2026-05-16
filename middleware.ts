@@ -1,6 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
-import { refreshAuthSession } from '@/lib/supabase/middleware';
 import { TENANT_SLUG_HEADER } from '@/lib/tenant/context';
 import { getOrganizationByCustomDomain } from '@/lib/tenant/queries';
 import { resolveTenant, type ResolveOutput } from '@/lib/tenant/resolver';
@@ -34,18 +33,7 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     const pathname = request.nextUrl.pathname;
 
     const result = resolveTenant({ host, pathname });
-    const response = await buildResponseForTenant(request, result);
-
-    // Si el tenant resolver devolvió 404 (custom-domain not found), no tiene
-    // sentido refrescar la sesión — la respuesta es terminal.
-    if (response.status === 404) return response;
-
-    try {
-      await refreshAuthSession(request, response);
-    } catch {
-      // El refresh de auth no debe romper requests anónimas (ej. landing).
-    }
-    return response;
+    return await buildResponseForTenant(request, result);
   } catch (error) {
     // Último cinturón: cualquier excepción no manejada deja pasar la request
     // sin headers de tenant. Loguear con console.error porque no tenemos
