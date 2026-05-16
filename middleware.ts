@@ -29,18 +29,30 @@ import { resolveTenant, type ResolveOutput } from '@/lib/tenant/resolver';
  * y Drizzle directamente, sin adaptar a edge.
  */
 export async function middleware(request: NextRequest): Promise<NextResponse> {
-  const host = request.headers.get('host') ?? '';
-  const pathname = request.nextUrl.pathname;
+  try {
+    const host = request.headers.get('host') ?? '';
+    const pathname = request.nextUrl.pathname;
 
-  const result = resolveTenant({ host, pathname });
-  const response = await buildResponseForTenant(request, result);
+    const result = resolveTenant({ host, pathname });
+    const response = await buildResponseForTenant(request, result);
 
-  // Si el tenant resolver devolvió 404 (custom-domain not found), no tiene
-  // sentido refrescar la sesión — la respuesta es terminal.
-  if (response.status === 404) return response;
+    // Si el tenant resolver devolvió 404 (custom-domain not found), no tiene
+    // sentido refrescar la sesión — la respuesta es terminal.
+    if (response.status === 404) return response;
 
-  await refreshAuthSession(request, response);
-  return response;
+    try {
+      await refreshAuthSession(request, response);
+    } catch {
+      // El refresh de auth no debe romper requests anónimas (ej. landing).
+    }
+    return response;
+  } catch (error) {
+    // Último cinturón: cualquier excepción no manejada deja pasar la request
+    // sin headers de tenant. Loguear con console.error porque no tenemos
+    // Sentry todavía (Paso 12).
+    console.error('[middleware] uncaught error:', error);
+    return NextResponse.next();
+  }
 }
 
 /**
@@ -74,9 +86,16 @@ async function buildResponseForTenant(
     }
 
     case 'custom-domain': {
-      const org = await getOrganizationByCustomDomain(result.host);
+      // Si la DB cae o tarda demasiado no podemos romper TODO el middleware.
+      // Devolvemos NextResponse.next() sin tenant header → la app decide
+      // qué mostrar (probablemente landing pública).
+      let org: Awaited<ReturnType<typeof getOrganizationByCustomDomain>> = null;
+      try {
+        org = await getOrganizationByCustomDomain(result.host);
+      } catch {
+        return NextResponse.next();
+      }
       if (org === null) {
-        // Custom domain apunta a Rehai pero no está en tenant_domains
         return NextResponse.json(
           { error: 'Domain not configured', host: result.host },
           { status: 404 },
