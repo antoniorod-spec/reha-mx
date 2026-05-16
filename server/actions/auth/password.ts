@@ -51,18 +51,8 @@ export async function loginWithPasswordAction(
     return { status: 'error', message: 'Email o contraseña incorrectos.' };
   }
 
-  // ¿Tiene 2FA activado? Si sí, requerir verify.
-  const { data: mfaData } = await supabase.auth.mfa.listFactors();
-  const verifiedTotp = mfaData?.totp.find((f) => f.status === 'verified');
-
-  if (verifiedTotp !== undefined) {
-    // AAL actual viene en la sesión
-    const aal = data.session?.user.aud;
-    if (aal !== 'aal2') {
-      return { status: 'mfa_required', factorId: verifiedTotp.id };
-    }
-  }
-
+  // 2FA temporalmente desactivado en modo prueba para socios — no consultamos
+  // listFactors ni exigimos verify. Reactivar al entrar Fase 5 (go-live MoveWell).
   // Auth completa — redirect (server lanza NEXT_REDIRECT, browser navega)
   redirect('/');
 }

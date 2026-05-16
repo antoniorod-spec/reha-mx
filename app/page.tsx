@@ -78,13 +78,8 @@ function AuthenticatedView({ email }: AuthenticatedViewProps) {
       </div>
 
       <div className="space-y-2 pt-2">
-        <Link
-          href="/setup-2fa"
-          className="border-border bg-surface-2 text-text hover:bg-surface flex h-9 w-full items-center justify-center rounded-md border text-[13px] font-medium transition-colors"
-        >
-          Configurar 2FA
-        </Link>
-
+        {/* 2FA temporalmente desactivado en modo prueba para socios.
+            Reactivar cuando entremos a Fase 5 (go-live MoveWell). */}
         <form action={logoutAction}>
           <button
             type="submit"
