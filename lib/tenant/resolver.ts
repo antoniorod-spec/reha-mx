@@ -25,6 +25,14 @@ const RESERVED_SUBDOMAINS = new Set(['www', 'admin', 'api', 'cdn', 'app']);
 /** Hosts de desarrollo que se tratan como public (marketing) sin path prefix. */
 const DEV_HOSTS = new Set(['localhost', '127.0.0.1', '0.0.0.0']);
 
+/**
+ * Sufijos de hosts de plataforma que NO son tenants — son los dominios de Vercel
+ * para deploy previews y production aliases. Sin esto, el middleware los trata
+ * como custom-domain y pega a la DB en cada request (causando timeouts cuando
+ * la red está degradada).
+ */
+const PLATFORM_HOST_SUFFIXES = ['.vercel.app'];
+
 /** Slug válido: letras, números, guiones; 1-63 chars (DNS subdomain limit). */
 const SLUG_REGEX = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/;
 
@@ -92,7 +100,14 @@ export function resolveTenant({ host, pathname }: ResolveInput): ResolveOutput {
     return { type: 'public', pathname: safePath };
   }
 
-  // 5. Otro hostname → candidato a custom domain. Middleware hace lookup en DB.
+  // 5. Hosts de plataforma (Vercel) → tratar como public (no son tenants).
+  for (const suffix of PLATFORM_HOST_SUFFIXES) {
+    if (cleanHost === suffix.slice(1) || cleanHost.endsWith(suffix)) {
+      return { type: 'public', pathname: safePath };
+    }
+  }
+
+  // 6. Otro hostname → candidato a custom domain. Middleware hace lookup en DB.
   return { type: 'custom-domain', host: cleanHost, pathname: safePath };
 }
 

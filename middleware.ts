@@ -1,7 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
 import { TENANT_SLUG_HEADER } from '@/lib/tenant/context';
-import { getOrganizationByCustomDomain } from '@/lib/tenant/queries';
 import { resolveTenant, type ResolveOutput } from '@/lib/tenant/resolver';
 
 /**
@@ -74,26 +73,28 @@ async function buildResponseForTenant(
     }
 
     case 'custom-domain': {
-      // Si la DB cae o tarda demasiado no podemos romper TODO el middleware.
-      // Devolvemos NextResponse.next() sin tenant header → la app decide
-      // qué mostrar (probablemente landing pública).
-      let org: Awaited<ReturnType<typeof getOrganizationByCustomDomain>> = null;
+      // Import dinámico: postgres-js solo se carga si REALMENTE hay un custom
+      // domain. Para rehai.vercel.app y otros hosts no-tenant, ni siquiera
+      // entramos aquí (el resolver los trata como 'public').
       try {
-        org = await getOrganizationByCustomDomain(result.host);
+        const { getOrganizationByCustomDomain } = await import('@/lib/tenant/queries');
+        const org = await getOrganizationByCustomDomain(result.host);
+        if (org === null) {
+          return NextResponse.json(
+            { error: 'Domain not configured', host: result.host },
+            { status: 404 },
+          );
+        }
+        const requestHeaders = new Headers(request.headers);
+        requestHeaders.set(TENANT_SLUG_HEADER, org.slug);
+        return NextResponse.next({
+          request: { headers: requestHeaders },
+        });
       } catch {
+        // Si la DB cae o tarda demasiado no podemos romper TODO el middleware.
+        // Devolvemos NextResponse.next() sin tenant header.
         return NextResponse.next();
       }
-      if (org === null) {
-        return NextResponse.json(
-          { error: 'Domain not configured', host: result.host },
-          { status: 404 },
-        );
-      }
-      const requestHeaders = new Headers(request.headers);
-      requestHeaders.set(TENANT_SLUG_HEADER, org.slug);
-      return NextResponse.next({
-        request: { headers: requestHeaders },
-      });
     }
 
     case 'public':
