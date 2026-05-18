@@ -26,9 +26,14 @@ import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 
 import * as schema from '@/lib/db/schema';
+import { appointmentTypes, type NewAppointmentType } from '@/lib/db/schema/appointment-types';
+import { appointments, type NewAppointment } from '@/lib/db/schema/appointments';
+import { branches, type NewBranch } from '@/lib/db/schema/branches';
 import { members, type NewMember } from '@/lib/db/schema/members';
 import { organizations, type NewOrganization } from '@/lib/db/schema/organizations';
 import { patients, type NewPatient } from '@/lib/db/schema/patients';
+import { practitioners, type NewPractitioner } from '@/lib/db/schema/practitioners';
+import { rooms, type NewRoom } from '@/lib/db/schema/rooms';
 import { tenantBranding, type NewTenantBranding } from '@/lib/db/schema/tenant-branding';
 
 loadEnv({ path: '.env.local' });
@@ -340,6 +345,406 @@ async function upsertPatients(orgId: string): Promise<number> {
   return inserted;
 }
 
+// ───────────────────────────────────────────────────────────────────────────
+// Branches (sucursales)
+// ───────────────────────────────────────────────────────────────────────────
+
+interface BranchSpec extends Omit<NewBranch, 'organizationId' | 'id'> {
+  rooms: ReadonlyArray<Pick<NewRoom, 'name' | 'type' | 'capacity'>>;
+}
+
+const BRANCHES_BY_ORG: Record<string, ReadonlyArray<BranchSpec>> = {
+  movewell: [
+    {
+      slug: 'centro',
+      name: 'MoveWell Centro',
+      color: '#3FBCD4',
+      addressLine: 'Centro Histórico',
+      city: 'San Luis Potosí',
+      state: 'San Luis Potosí',
+      postalCode: '78000',
+      timezone: 'America/Mexico_City',
+      defaultOpenAt: '07:00',
+      defaultCloseAt: '21:00',
+      status: 'active',
+      rooms: [
+        { name: 'Camilla 1', type: 'couch', capacity: 1 },
+        { name: 'Camilla 2', type: 'couch', capacity: 1 },
+        { name: 'Camilla 3', type: 'couch', capacity: 1 },
+        { name: 'Área funcional', type: 'functional', capacity: 6 },
+        { name: 'Evaluación', type: 'assessment', capacity: 1 },
+      ],
+    },
+    {
+      slug: 'lomas-padel',
+      name: 'MoveWell Lomas Pádel',
+      color: '#F472B6',
+      addressLine: 'Club de Pádel Lomas',
+      city: 'San Luis Potosí',
+      state: 'San Luis Potosí',
+      postalCode: '78214',
+      timezone: 'America/Mexico_City',
+      defaultOpenAt: '08:00',
+      defaultCloseAt: '20:00',
+      status: 'active',
+      rooms: [
+        { name: 'Camilla A', type: 'couch', capacity: 1 },
+        { name: 'Camilla B', type: 'couch', capacity: 1 },
+        { name: 'Área funcional', type: 'functional', capacity: 4 },
+      ],
+    },
+  ],
+  demo: [
+    {
+      slug: 'demo-hq',
+      name: 'Demo HQ',
+      color: '#E879F9',
+      addressLine: 'Av. de los Insurgentes 1234',
+      city: 'Ciudad de México',
+      state: 'CDMX',
+      postalCode: '03100',
+      timezone: 'America/Mexico_City',
+      defaultOpenAt: '08:00',
+      defaultCloseAt: '20:00',
+      status: 'active',
+      rooms: [
+        { name: 'Camilla 1', type: 'couch', capacity: 1 },
+        { name: 'Camilla 2', type: 'couch', capacity: 1 },
+        { name: 'Funcional', type: 'functional', capacity: 3 },
+      ],
+    },
+  ],
+};
+
+async function upsertBranchesAndRooms(
+  orgSlug: string,
+  orgId: string,
+): Promise<{ branches: number; rooms: number }> {
+  const specs = BRANCHES_BY_ORG[orgSlug] ?? [];
+  let branchCount = 0;
+  let roomCount = 0;
+
+  for (const spec of specs) {
+    const { rooms: roomSpecs, ...branchData } = spec;
+
+    const existing = await db
+      .select({ id: branches.id })
+      .from(branches)
+      .where(sql`${branches.organizationId} = ${orgId} AND ${branches.slug} = ${spec.slug}`)
+      .limit(1);
+
+    let branchId: string;
+    if (existing[0]) {
+      await db
+        .update(branches)
+        .set({ ...branchData, updatedAt: new Date() })
+        .where(sql`${branches.id} = ${existing[0].id}`);
+      branchId = existing[0].id;
+    } else {
+      const inserted = await db
+        .insert(branches)
+        .values({ ...branchData, organizationId: orgId })
+        .returning({ id: branches.id });
+      branchId = inserted[0]!.id;
+      branchCount += 1;
+    }
+
+    for (const roomSpec of roomSpecs) {
+      const existingRoom = await db
+        .select({ id: rooms.id })
+        .from(rooms)
+        .where(sql`${rooms.branchId} = ${branchId} AND ${rooms.name} = ${roomSpec.name}`)
+        .limit(1);
+
+      if (existingRoom[0]) continue;
+      await db.insert(rooms).values({ ...roomSpec, organizationId: orgId, branchId });
+      roomCount += 1;
+    }
+  }
+
+  return { branches: branchCount, rooms: roomCount };
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Tipos de cita estándar
+// ───────────────────────────────────────────────────────────────────────────
+
+const APPOINTMENT_TYPE_SEEDS: ReadonlyArray<Omit<NewAppointmentType, 'organizationId'>> = [
+  {
+    slug: 'valoracion',
+    name: 'Valoración inicial',
+    durationMinutes: 60,
+    color: '#3FBCD4',
+    bookableByPatient: 'true',
+    priceCents: 80000,
+  },
+  {
+    slug: 'sesion-rehab',
+    name: 'Sesión de rehabilitación',
+    durationMinutes: 45,
+    color: '#22D3EE',
+    bookableByPatient: 'false',
+    priceCents: 60000,
+  },
+  {
+    slug: 'reevaluacion',
+    name: 'Reevaluación',
+    durationMinutes: 30,
+    color: '#A78BFA',
+    bookableByPatient: 'false',
+    priceCents: 40000,
+  },
+  {
+    slug: 'readaptacion-funcional',
+    name: 'Readaptación funcional',
+    durationMinutes: 60,
+    color: '#34D399',
+    bookableByPatient: 'false',
+    priceCents: 65000,
+  },
+  {
+    slug: 'alta',
+    name: 'Alta clínica',
+    durationMinutes: 30,
+    color: '#FBBF24',
+    bookableByPatient: 'false',
+    priceCents: 0,
+  },
+];
+
+async function upsertAppointmentTypes(orgId: string): Promise<number> {
+  let inserted = 0;
+  for (const t of APPOINTMENT_TYPE_SEEDS) {
+    const existing = await db
+      .select({ id: appointmentTypes.id })
+      .from(appointmentTypes)
+      .where(
+        sql`${appointmentTypes.organizationId} = ${orgId} AND ${appointmentTypes.slug} = ${t.slug}`,
+      )
+      .limit(1);
+
+    if (existing[0]) continue;
+    await db.insert(appointmentTypes).values({ ...t, organizationId: orgId });
+    inserted += 1;
+  }
+  return inserted;
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Practitioners (perfiles profesionales de fisios)
+// ───────────────────────────────────────────────────────────────────────────
+
+interface PractitionerSpec {
+  emailLocal: string; // matching MemberSpec.emailLocal
+  displayName: string;
+  title: string;
+  specialty: NewPractitioner['specialty'];
+  color: string;
+}
+
+const PRACTITIONER_SPECS: ReadonlyArray<PractitionerSpec> = [
+  {
+    emailLocal: 'fisio',
+    displayName: 'Mtra. Paulina Granados',
+    title: 'Mtra. en Readaptación Deportiva',
+    specialty: 'readaptacion_funcional',
+    color: '#22D3EE',
+  },
+];
+
+async function upsertPractitionersForOrg(orgSlug: string, orgId: string): Promise<number> {
+  // Buscar primer branch para asignar como primary
+  const branchRows = await db
+    .select({ id: branches.id })
+    .from(branches)
+    .where(sql`${branches.organizationId} = ${orgId}`)
+    .orderBy(branches.slug)
+    .limit(1);
+  const primaryBranchId = branchRows[0]?.id;
+
+  let inserted = 0;
+  for (const spec of PRACTITIONER_SPECS) {
+    const email = `${spec.emailLocal}@${orgSlug}.test`;
+    const userId = await findUserByEmail(email);
+    if (!userId) continue;
+
+    const existing = await db
+      .select({ id: practitioners.id })
+      .from(practitioners)
+      .where(
+        sql`${practitioners.organizationId} = ${orgId} AND ${practitioners.userId} = ${userId}`,
+      )
+      .limit(1);
+
+    if (existing[0]) {
+      // Actualizar display + primary branch para mantener consistencia
+      await db
+        .update(practitioners)
+        .set({
+          displayName: spec.displayName,
+          title: spec.title,
+          specialty: spec.specialty,
+          color: spec.color,
+          primaryBranchId: primaryBranchId ?? null,
+          updatedAt: new Date(),
+        })
+        .where(sql`${practitioners.id} = ${existing[0].id}`);
+      continue;
+    }
+
+    await db.insert(practitioners).values({
+      organizationId: orgId,
+      userId,
+      displayName: spec.displayName,
+      title: spec.title,
+      specialty: spec.specialty,
+      color: spec.color,
+      primaryBranchId: primaryBranchId ?? null,
+    });
+    inserted += 1;
+  }
+
+  return inserted;
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Citas demo
+// Solo para MoveWell — toma 3 pacientes activos + 1 fisio + 1 branch/room y
+// crea citas en distintos estados / fechas relativas a hoy.
+// ───────────────────────────────────────────────────────────────────────────
+
+async function upsertDemoAppointments(orgId: string): Promise<number> {
+  // Buscar contexto
+  const branchRow = await db
+    .select({ id: branches.id })
+    .from(branches)
+    .where(sql`${branches.organizationId} = ${orgId} AND ${branches.slug} = 'centro'`)
+    .limit(1);
+  const branchId = branchRow[0]?.id;
+  if (!branchId) return 0;
+
+  const roomRow = await db
+    .select({ id: rooms.id })
+    .from(rooms)
+    .where(sql`${rooms.branchId} = ${branchId} AND ${rooms.name} = 'Camilla 1'`)
+    .limit(1);
+  const roomId = roomRow[0]?.id;
+
+  const practitionerRow = await db
+    .select({ id: practitioners.id })
+    .from(practitioners)
+    .where(sql`${practitioners.organizationId} = ${orgId}`)
+    .limit(1);
+  const practitionerId = practitionerRow[0]?.id;
+  if (!practitionerId) return 0;
+
+  const typeRows = await db
+    .select({ id: appointmentTypes.id, slug: appointmentTypes.slug })
+    .from(appointmentTypes)
+    .where(sql`${appointmentTypes.organizationId} = ${orgId}`);
+
+  const typeBySlug: Record<string, string> = {};
+  for (const t of typeRows) typeBySlug[t.slug] = t.id;
+  const sesionId = typeBySlug['sesion-rehab'];
+  const valoracionId = typeBySlug['valoracion'];
+  if (!sesionId || !valoracionId) return 0;
+
+  const patientRows = await db
+    .select({ id: patients.id, externalId: patients.externalId })
+    .from(patients)
+    .where(sql`${patients.organizationId} = ${orgId}`)
+    .orderBy(patients.externalId);
+
+  const patientByExternal: Record<string, string> = {};
+  for (const p of patientRows) {
+    if (p.externalId) patientByExternal[p.externalId] = p.id;
+  }
+
+  const ana = patientByExternal['demo-001'];
+  const carlos = patientByExternal['demo-002'];
+  const lucia = patientByExternal['demo-005'];
+  if (!ana || !carlos || !lucia) return 0;
+
+  // Construir fechas relativas: hoy 09:00, mañana 11:00, ayer 17:00 (completada)
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const at = (daysOffset: number, hour: number, minutes: number): Date => {
+    const d = new Date(today);
+    d.setDate(d.getDate() + daysOffset);
+    d.setHours(hour, minutes, 0, 0);
+    return d;
+  };
+
+  const seeds: ReadonlyArray<NewAppointment> = [
+    {
+      organizationId: orgId,
+      branchId,
+      practitionerId,
+      patientId: ana,
+      typeId: sesionId,
+      roomId: roomId ?? null,
+      startAt: at(0, 9, 0),
+      endAt: at(0, 9, 45),
+      status: 'confirmed',
+      notes: 'Continuar trabajo de propiocepción rodilla derecha.',
+      source: 'manual',
+    },
+    {
+      organizationId: orgId,
+      branchId,
+      practitionerId,
+      patientId: carlos,
+      typeId: sesionId,
+      roomId: roomId ?? null,
+      startAt: at(0, 11, 0),
+      endAt: at(0, 11, 45),
+      status: 'scheduled',
+      notes: 'Avance progresivo, evaluar carga concéntrica.',
+      source: 'manual',
+    },
+    {
+      organizationId: orgId,
+      branchId,
+      practitionerId,
+      patientId: lucia,
+      typeId: valoracionId,
+      roomId: roomId ?? null,
+      startAt: at(1, 16, 0),
+      endAt: at(1, 17, 0),
+      status: 'scheduled',
+      notes: 'Valoración de seguimiento pre-temporada.',
+      source: 'manual',
+    },
+    {
+      organizationId: orgId,
+      branchId,
+      practitionerId,
+      patientId: ana,
+      typeId: sesionId,
+      roomId: roomId ?? null,
+      startAt: at(-1, 17, 0),
+      endAt: at(-1, 17, 45),
+      status: 'completed',
+      notes: 'Sesión completada. EVA pre=4, post=2.',
+      source: 'manual',
+    },
+  ];
+
+  // Idempotencia: si ya hay >=4 citas en la org, asumir que el seed corrió antes.
+  const existingCount = await db
+    .select({ value: sql<number>`COUNT(*)::int` })
+    .from(appointments)
+    .where(sql`${appointments.organizationId} = ${orgId}`);
+  if ((existingCount[0]?.value ?? 0) >= seeds.length) return 0;
+
+  let inserted = 0;
+  for (const seed of seeds) {
+    await db.insert(appointments).values(seed);
+    inserted += 1;
+  }
+  return inserted;
+}
+
 async function main(): Promise<void> {
   console.info('seed: arrancando…');
 
@@ -355,8 +760,25 @@ async function main(): Promise<void> {
       console.info(`  ✓ ${email} (${member.role})`);
     }
 
-    const inserted = await upsertPatients(orgId);
-    console.info(`  ✓ ${inserted} pacientes demo (idempotente)`);
+    const patientsInserted = await upsertPatients(orgId);
+    console.info(`  ✓ ${patientsInserted} pacientes demo (idempotente)`);
+
+    const { branches: branchesInserted, rooms: roomsInserted } = await upsertBranchesAndRooms(
+      org.slug,
+      orgId,
+    );
+    console.info(`  ✓ ${branchesInserted} branches / ${roomsInserted} rooms nuevos`);
+
+    const typesInserted = await upsertAppointmentTypes(orgId);
+    console.info(`  ✓ ${typesInserted} appointment types nuevos`);
+
+    const practitionersInserted = await upsertPractitionersForOrg(org.slug, orgId);
+    console.info(`  ✓ ${practitionersInserted} practitioners nuevos`);
+
+    if (org.slug === 'movewell') {
+      const appointmentsInserted = await upsertDemoAppointments(orgId);
+      console.info(`  ✓ ${appointmentsInserted} citas demo`);
+    }
   }
 
   // Promover hola@antoniotembleque.com a admin de MoveWell.

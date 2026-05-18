@@ -79,11 +79,25 @@ function AuthenticatedView({ email }: AuthenticatedViewProps) {
 
       <div className="space-y-2 pt-2">
         <Link
-          href="/pacientes"
+          href="/agenda"
           className="bg-accent text-accent-on flex h-9 w-full items-center justify-center rounded-md text-[13px] font-semibold transition-opacity hover:opacity-90"
         >
-          Ver pacientes
+          Ver agenda
         </Link>
+        <div className="grid grid-cols-2 gap-2">
+          <Link
+            href="/pacientes"
+            className="border-border bg-surface-2 text-text hover:bg-surface flex h-9 items-center justify-center rounded-md border text-[12px] font-medium transition-colors"
+          >
+            Pacientes
+          </Link>
+          <Link
+            href="/configuracion"
+            className="border-border bg-surface-2 text-text hover:bg-surface flex h-9 items-center justify-center rounded-md border text-[12px] font-medium transition-colors"
+          >
+            Configuración
+          </Link>
+        </div>
 
         {/* 2FA temporalmente desactivado en modo prueba para socios.
             Reactivar cuando entremos a Fase 5 (go-live MoveWell). */}

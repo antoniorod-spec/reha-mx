@@ -14,3 +14,8 @@ export * from './tenant-branding';
 export * from './members';
 export * from './audit-logs';
 export * from './patients';
+export * from './branches';
+export * from './rooms';
+export * from './practitioners';
+export * from './appointment-types';
+export * from './appointments';
