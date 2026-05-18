@@ -78,6 +78,13 @@ function AuthenticatedView({ email }: AuthenticatedViewProps) {
       </div>
 
       <div className="space-y-2 pt-2">
+        <Link
+          href="/pacientes"
+          className="bg-accent text-accent-on flex h-9 w-full items-center justify-center rounded-md text-[13px] font-semibold transition-opacity hover:opacity-90"
+        >
+          Ver pacientes
+        </Link>
+
         {/* 2FA temporalmente desactivado en modo prueba para socios.
             Reactivar cuando entremos a Fase 5 (go-live MoveWell). */}
         <form action={logoutAction}>

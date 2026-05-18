@@ -13,3 +13,4 @@ export * from './tenant-domains';
 export * from './tenant-branding';
 export * from './members';
 export * from './audit-logs';
+export * from './patients';
