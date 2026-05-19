@@ -75,13 +75,15 @@ export default async function ConfiguracionPage() {
   });
 
   return (
-    <main className="mx-auto w-full max-w-5xl px-6 py-8">
-      <header className="mb-6">
-        <p className="text-subtle font-mono text-[11px] tracking-wider uppercase">
-          {userOrg.organization.name}
+    <main className="px-4 pt-4 pb-10 sm:px-6 sm:pt-5">
+      <header className="mb-4 sm:mb-5">
+        <p className="text-subtle font-mono text-[10.5px] tracking-wider uppercase sm:text-[11px]">
+          Ajustes · {userOrg.organization.name}
         </p>
-        <h1 className="text-text mt-1 text-2xl font-semibold tracking-[-0.022em]">Configuración</h1>
-        <p className="text-muted mt-1 text-[13px]">
+        <h1 className="text-text mt-1 text-[22px] font-semibold tracking-[-0.022em] sm:text-[28px]">
+          Configuración<span className="text-accent">.</span>
+        </h1>
+        <p className="text-muted mt-1.5 text-[12px] sm:text-[12.5px]">
           Sucursales, equipo y tipos de cita. Formularios de edición se agregan en próximo sprint.{' '}
           <Link href="/agenda" className="text-accent underline-offset-2 hover:underline">
             Ver agenda →

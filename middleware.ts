@@ -31,8 +31,14 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     const host = request.headers.get('host') ?? '';
     const pathname = request.nextUrl.pathname;
 
+    // Exponemos pathname como request header para que layouts/RSC lo lean
+    // vía `headers()`. Hacemos copy mutable que luego buildResponseForTenant
+    // puede extender con x-tenant-slug.
+    const baseRequestHeaders = new Headers(request.headers);
+    baseRequestHeaders.set('x-pathname', pathname);
+
     const result = resolveTenant({ host, pathname });
-    return await buildResponseForTenant(request, result);
+    return await buildResponseForTenant(request, result, baseRequestHeaders);
   } catch (error) {
     // Último cinturón: cualquier excepción no manejada deja pasar la request
     // sin headers de tenant. Loguear con console.error porque no tenemos
@@ -50,11 +56,11 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
 async function buildResponseForTenant(
   request: NextRequest,
   result: ResolveOutput,
+  baseRequestHeaders: Headers,
 ): Promise<NextResponse> {
   switch (result.type) {
     case 'tenant': {
-      const requestHeaders = new Headers(request.headers);
-      requestHeaders.set(TENANT_SLUG_HEADER, result.tenantSlug);
+      baseRequestHeaders.set(TENANT_SLUG_HEADER, result.tenantSlug);
 
       // Si el tenant viene de /t/[slug]/*, rewrite internamente a la ruta sin
       // el prefijo. Así app/(app)/dashboard/page.tsx sirve tanto a
@@ -63,12 +69,12 @@ async function buildResponseForTenant(
         const rewriteUrl = request.nextUrl.clone();
         rewriteUrl.pathname = result.pathname;
         return NextResponse.rewrite(rewriteUrl, {
-          request: { headers: requestHeaders },
+          request: { headers: baseRequestHeaders },
         });
       }
 
       return NextResponse.next({
-        request: { headers: requestHeaders },
+        request: { headers: baseRequestHeaders },
       });
     }
 
@@ -85,21 +91,20 @@ async function buildResponseForTenant(
             { status: 404 },
           );
         }
-        const requestHeaders = new Headers(request.headers);
-        requestHeaders.set(TENANT_SLUG_HEADER, org.slug);
+        baseRequestHeaders.set(TENANT_SLUG_HEADER, org.slug);
         return NextResponse.next({
-          request: { headers: requestHeaders },
+          request: { headers: baseRequestHeaders },
         });
       } catch {
         // Si la DB cae o tarda demasiado no podemos romper TODO el middleware.
-        // Devolvemos NextResponse.next() sin tenant header.
-        return NextResponse.next();
+        // Devolvemos NextResponse.next() preservando x-pathname.
+        return NextResponse.next({ request: { headers: baseRequestHeaders } });
       }
     }
 
     case 'public':
     case 'reserved':
-      return NextResponse.next();
+      return NextResponse.next({ request: { headers: baseRequestHeaders } });
   }
 }
 

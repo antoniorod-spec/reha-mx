@@ -66,18 +66,37 @@ export default async function PacientesPage({ searchParams }: PageProps) {
   });
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-6 py-8">
-      <header className="mb-6 flex items-end justify-between gap-4">
+    <main className="px-4 pt-4 pb-10 sm:px-6 sm:pt-5">
+      <header className="mb-4 flex flex-col gap-3 sm:mb-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-subtle font-mono text-[11px] tracking-wider uppercase">
-            {userOrg.organization.name}
+          <p className="text-subtle font-mono text-[10.5px] tracking-wider uppercase sm:text-[11px]">
+            Directorio · {userOrg.organization.name}
           </p>
-          <h1 className="text-text mt-1 text-2xl font-semibold tracking-[-0.022em]">Pacientes</h1>
-          <p className="text-muted mt-1 text-[13px]">
+          <h1 className="text-text mt-1 text-[22px] font-semibold tracking-[-0.022em] sm:text-[28px]">
+            Pacientes<span className="text-accent">.</span>
+          </h1>
+          <p className="text-muted mt-1.5 text-[12px] sm:text-[12.5px]">
             {list.total === 0
               ? 'No hay pacientes en este filtro.'
-              : `${list.total.toLocaleString('es-MX')} ${list.total === 1 ? 'paciente' : 'pacientes'} en total.`}
+              : `${list.total.toLocaleString('es-MX')} ${list.total === 1 ? 'paciente' : 'pacientes'} en total`}
           </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            disabled
+            className="border-border bg-surface text-muted inline-flex h-9 items-center gap-1.5 rounded-md border px-3 text-[12.5px] font-medium disabled:cursor-not-allowed"
+          >
+            Exportar
+          </button>
+          <button
+            type="button"
+            disabled
+            className="bg-accent text-accent-on inline-flex h-9 items-center gap-1.5 rounded-md px-3 text-[12.5px] font-semibold disabled:cursor-not-allowed disabled:opacity-60"
+            title="Crear paciente — disponible en próximo sprint"
+          >
+            + Nuevo paciente
+          </button>
         </div>
       </header>
 
