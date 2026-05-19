@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { and, asc, eq, gte, lt, sql } from 'drizzle-orm';
+import { and, asc, eq, gt, gte, lt, ne, sql, type SQL } from 'drizzle-orm';
 
 import { db } from '@/lib/db/client';
 import { appointmentTypes, type AppointmentType } from '@/lib/db/schema/appointment-types';
@@ -200,17 +200,26 @@ export interface ConflictResult {
 export async function checkAppointmentConflicts(
   params: ConflictCheckParams,
 ): Promise<ConflictResult> {
-  const overlapClause = sql`${appointments.startAt} < ${params.endAt} AND ${appointments.endAt} > ${params.startAt}`;
-  const blockingStatus = sql`${appointments.status} NOT IN ('cancelled', 'no_show')`;
+  // Usamos operadores Drizzle (lt/gt) para que las Date se serialicen
+  // correctamente. NO usar `sql\`${col} < ${date}\`` con postgres-js — la
+  // interpolación no convierte Date a string automáticamente y la query
+  // falla con "The 'string' argument must be of type string".
+  const overlapStart = lt(appointments.startAt, params.endAt);
+  const overlapEnd = gt(appointments.endAt, params.startAt);
+  // Status NOT IN — usar negación con eq evita el casting de enum literal.
+  const notCancelled = ne(appointments.status, 'cancelled');
+  const notNoShow = ne(appointments.status, 'no_show');
 
-  const baseConditions = [
+  const baseConditions: SQL[] = [
     eq(appointments.organizationId, params.organizationId),
-    overlapClause,
-    blockingStatus,
+    overlapStart,
+    overlapEnd,
+    notCancelled,
+    notNoShow,
   ];
 
   if (params.excludeAppointmentId) {
-    baseConditions.push(sql`${appointments.id} <> ${params.excludeAppointmentId}`);
+    baseConditions.push(ne(appointments.id, params.excludeAppointmentId));
   }
 
   const [practitionerHit, roomHit] = await Promise.all([
