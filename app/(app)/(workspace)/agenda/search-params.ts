@@ -1,23 +1,22 @@
 export interface AgendaFilters {
   /** Fecha del día a mostrar en formato YYYY-MM-DD (timezone del servidor). */
   date: string;
-  /** Slug del branch seleccionado, o null para "todas las sucursales". */
-  branchSlug: string | null;
 }
 
 /**
  * Normaliza searchParams del request de agenda.
- * Defaults: date=hoy en tz del servidor, branchSlug=null (todas).
+ * Default: date=hoy en tz del servidor.
+ *
+ * El filtro de sucursal se resuelve desde la cookie `rehai-active-branch`
+ * (ver lib/agenda/active-branch.ts), no desde la URL — así el sidebar y la
+ * agenda comparten la misma fuente de verdad.
  */
 export function parseAgendaSearchParams(
   raw: Record<string, string | string[] | undefined>,
 ): AgendaFilters {
   const dateRaw = firstStr(raw['date']);
-  const branchSlug = firstStr(raw['branch']) ?? null;
-
   const date = dateRaw && /^\d{4}-\d{2}-\d{2}$/.test(dateRaw) ? dateRaw : todayLocalIsoDate();
-
-  return { date, branchSlug };
+  return { date };
 }
 
 export function todayLocalIsoDate(): string {

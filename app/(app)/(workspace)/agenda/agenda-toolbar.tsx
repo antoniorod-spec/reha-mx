@@ -3,42 +3,26 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTransition } from 'react';
 
-import { cn } from '@/lib/utils/cn';
-
 import { todayLocalIsoDate } from './search-params';
-
-interface BranchOption {
-  id: string;
-  slug: string;
-  name: string;
-}
 
 interface AgendaToolbarProps {
   date: string; // YYYY-MM-DD
-  branchSlug: string | null;
-  branches: BranchOption[];
 }
 
 /**
- * Toolbar de la agenda: selector de fecha + chips de sucursal + botones
- * "Anterior/Hoy/Siguiente". Actualiza la URL y deja que el RSC vuelva a
- * renderizar.
+ * Toolbar de la agenda: selector de fecha + botones "Anterior/Hoy/Siguiente".
+ * El filtro por sucursal vive en el sidebar global (BranchSelector) y se lee
+ * desde cookie, no desde la URL.
  */
-export function AgendaToolbar({ date, branchSlug, branches }: AgendaToolbarProps) {
+export function AgendaToolbar({ date }: AgendaToolbarProps) {
   const router = useRouter();
   const params = useSearchParams();
   const [, startTransition] = useTransition();
 
-  function navigate(next: { date?: string; branch?: string | null }): void {
+  function navigate(nextDate: string): void {
     const merged = new URLSearchParams(params);
-    if ('date' in next && next.date) {
-      if (next.date === todayLocalIsoDate()) merged.delete('date');
-      else merged.set('date', next.date);
-    }
-    if ('branch' in next) {
-      if (next.branch === null) merged.delete('branch');
-      else if (next.branch) merged.set('branch', next.branch);
-    }
+    if (nextDate === todayLocalIsoDate()) merged.delete('date');
+    else merged.set('date', nextDate);
     const qs = merged.toString();
     startTransition(() => router.replace(qs ? `/agenda?${qs}` : '/agenda'));
   }
@@ -49,7 +33,7 @@ export function AgendaToolbar({ date, branchSlug, branches }: AgendaToolbarProps
     const yyyy = d.getFullYear();
     const mm = String(d.getMonth() + 1).padStart(2, '0');
     const dd = String(d.getDate()).padStart(2, '0');
-    navigate({ date: `${yyyy}-${mm}-${dd}` });
+    navigate(`${yyyy}-${mm}-${dd}`);
   }
 
   const formatted = new Date(`${date}T00:00:00`).toLocaleDateString('es-MX', {
@@ -78,7 +62,7 @@ export function AgendaToolbar({ date, branchSlug, branches }: AgendaToolbarProps
           <input
             type="date"
             value={date}
-            onChange={(e) => navigate({ date: e.target.value })}
+            onChange={(e) => navigate(e.target.value)}
             className="text-subtle font-mono text-[11px]"
             aria-label="Seleccionar fecha"
           />
@@ -95,53 +79,12 @@ export function AgendaToolbar({ date, branchSlug, branches }: AgendaToolbarProps
 
         <button
           type="button"
-          onClick={() => navigate({ date: todayLocalIsoDate() })}
+          onClick={() => navigate(todayLocalIsoDate())}
           className="border-border-soft text-muted hover:text-text inline-flex h-9 items-center rounded-md border px-3 text-[11px] transition-colors"
         >
           Hoy
         </button>
       </div>
-
-      {branches.length > 1 && (
-        <nav className="-mx-1 flex flex-wrap gap-1" aria-label="Filtrar por sucursal">
-          <BranchChip
-            label="Todas"
-            isActive={branchSlug === null}
-            onClick={() => navigate({ branch: null })}
-          />
-          {branches.map((b) => (
-            <BranchChip
-              key={b.id}
-              label={b.name}
-              isActive={branchSlug === b.slug}
-              onClick={() => navigate({ branch: b.slug })}
-            />
-          ))}
-        </nav>
-      )}
     </div>
-  );
-}
-
-interface BranchChipProps {
-  label: string;
-  isActive: boolean;
-  onClick: () => void;
-}
-
-function BranchChip({ label, isActive, onClick }: BranchChipProps) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={cn(
-        'flex h-8 items-center rounded-md border px-3 text-[12px] font-medium transition-colors',
-        isActive
-          ? 'border-accent bg-accent-soft text-accent'
-          : 'border-border-soft text-muted hover:text-text hover:bg-surface-2',
-      )}
-    >
-      {label}
-    </button>
   );
 }

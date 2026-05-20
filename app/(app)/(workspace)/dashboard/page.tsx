@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { AvatarInitials } from '@/components/shared/avatar-initials';
 import { Card } from '@/components/shared/card';
 import { Kpi } from '@/components/shared/kpi';
+import { getActiveBranch } from '@/lib/agenda/active-branch';
 import { logAudit } from '@/lib/audit/log';
 import { getCurrentUserOrg } from '@/lib/auth/current-user-org';
 import { getDashboardStats, getUpcomingAppointments } from '@/lib/dashboard/queries';
@@ -50,16 +51,23 @@ export default async function DashboardPage() {
   // El layout (workspace) ya redirigió si no hay sesión — userOrg está garantizado.
   if (!userOrg) return null;
 
+  const activeBranch = await getActiveBranch(userOrg.organization.id);
+  const branchId = activeBranch?.id ?? null;
+
   const [stats, upcoming] = await Promise.all([
-    getDashboardStats(userOrg.organization.id),
-    getUpcomingAppointments(userOrg.organization.id, 5),
+    getDashboardStats(userOrg.organization.id, branchId),
+    getUpcomingAppointments(userOrg.organization.id, 5, branchId),
   ]);
 
   await logAudit({
     organizationId: userOrg.organization.id,
     userId: userOrg.userId,
     action: 'dashboard.viewed',
+    metadata: { branchSlug: activeBranch?.slug ?? null },
   });
+
+  const branchLabel = activeBranch?.name ?? 'Vista consolidada';
+  const branchDotColor = activeBranch?.color ?? '#3FBCD4';
 
   const greeting = buildGreeting(userOrg.email);
   const today = new Date();
@@ -84,8 +92,12 @@ export default async function DashboardPage() {
             <span className="text-accent">.</span>
           </h1>
           <p className="text-muted mt-1.5 flex items-center gap-2 text-[12px] sm:text-[12.5px]">
-            <span className="bg-accent size-1.5 shrink-0 rounded-full" aria-hidden />
-            {userOrg.organization.name}
+            <span
+              className="size-1.5 shrink-0 rounded-full"
+              style={{ background: branchDotColor }}
+              aria-hidden
+            />
+            {userOrg.organization.name} · <span className="text-text">{branchLabel}</span>
           </p>
         </div>
         <div className="flex items-center gap-2">

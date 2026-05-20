@@ -6,6 +6,7 @@ import { SidebarNav } from './sidebar-nav';
 
 interface SidebarProps {
   branches: BranchOption[];
+  activeBranchSlug: string | null;
   organizationName: string;
 }
 
@@ -20,14 +21,14 @@ interface SidebarProps {
  * Mobile: este componente se renderiza dentro de un drawer (ver shell-mobile).
  * Server component — el branch-selector y nav son client islands.
  */
-export function Sidebar({ branches, organizationName }: SidebarProps) {
+export function Sidebar({ branches, activeBranchSlug, organizationName }: SidebarProps) {
   return (
     <aside className="border-border bg-surface sticky top-0 hidden h-screen w-[244px] shrink-0 flex-col border-r md:flex">
       <div className="px-4 pt-5 pb-3">
         <Logo />
       </div>
       <div className="px-3 pb-3">
-        <BranchSelector branches={branches} initialBranchId="all" />
+        <BranchSelector branches={branches} activeSlug={activeBranchSlug} />
       </div>
       <div className="text-subtle px-4 pt-2 pb-1.5 font-mono text-[10px] tracking-wider uppercase">
         Workspace

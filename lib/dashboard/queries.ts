@@ -29,7 +29,10 @@ export interface DashboardStats {
   upcomingReturns: number;
 }
 
-export async function getDashboardStats(organizationId: string): Promise<DashboardStats> {
+export async function getDashboardStats(
+  organizationId: string,
+  branchId: string | null = null,
+): Promise<DashboardStats> {
   const now = new Date();
   const dayStart = new Date(now);
   dayStart.setHours(0, 0, 0, 0);
@@ -38,6 +41,11 @@ export async function getDashboardStats(organizationId: string): Promise<Dashboa
 
   const weekEnd = new Date(dayStart);
   weekEnd.setDate(weekEnd.getDate() + 7);
+
+  // Patients y upcomingReturns NO se filtran por branch (un paciente puede
+  // tener citas en cualquier sucursal de la org). Solo los conteos de
+  // appointments filtran por branchId si está presente.
+  const appointmentBranchFilter = branchId ? eq(appointments.branchId, branchId) : undefined;
 
   const [activeRow, todayRow, weekRow, returnsRow] = await Promise.all([
     db
@@ -56,6 +64,7 @@ export async function getDashboardStats(organizationId: string): Promise<Dashboa
           eq(appointments.organizationId, organizationId),
           gte(appointments.startAt, dayStart),
           lt(appointments.startAt, dayEnd),
+          appointmentBranchFilter,
         ),
       ),
     db
@@ -66,6 +75,7 @@ export async function getDashboardStats(organizationId: string): Promise<Dashboa
           eq(appointments.organizationId, organizationId),
           gte(appointments.startAt, dayStart),
           lt(appointments.startAt, weekEnd),
+          appointmentBranchFilter,
         ),
       ),
     db
@@ -102,6 +112,7 @@ export interface UpcomingAppointmentRow {
 export async function getUpcomingAppointments(
   organizationId: string,
   limit = 5,
+  branchId: string | null = null,
 ): Promise<UpcomingAppointmentRow[]> {
   const now = new Date();
   const horizon = new Date(now);
@@ -131,6 +142,7 @@ export async function getUpcomingAppointments(
         eq(appointments.organizationId, organizationId),
         gte(appointments.startAt, now),
         lt(appointments.startAt, horizon),
+        branchId ? eq(appointments.branchId, branchId) : undefined,
       ),
     )
     .orderBy(asc(appointments.startAt))

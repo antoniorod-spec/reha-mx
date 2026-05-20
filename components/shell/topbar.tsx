@@ -16,6 +16,7 @@ interface TopbarProps {
     role: string;
   };
   branches: BranchOption[];
+  activeBranchSlug: string | null;
 }
 
 /**
@@ -28,7 +29,13 @@ interface TopbarProps {
  * `pathLabel` ya calculado (no toca pathname acá para evitar client island
  * innecesaria).
  */
-export function Topbar({ organizationName, pathLabel, user, branches }: TopbarProps) {
+export function Topbar({
+  organizationName,
+  pathLabel,
+  user,
+  branches,
+  activeBranchSlug,
+}: TopbarProps) {
   return (
     <header
       className="border-border bg-bg/85 sticky top-0 z-20 flex items-center gap-2 border-b px-3 py-2.5 backdrop-blur-md sm:px-5"
@@ -36,7 +43,7 @@ export function Topbar({ organizationName, pathLabel, user, branches }: TopbarPr
     >
       {/* Mobile: hamburger + logo compact */}
       <div className="flex items-center gap-2 md:hidden">
-        <MobileDrawer branches={branches} />
+        <MobileDrawer branches={branches} activeBranchSlug={activeBranchSlug} />
         <Logo />
       </div>
 

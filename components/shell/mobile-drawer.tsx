@@ -9,6 +9,7 @@ import { SidebarNav } from './sidebar-nav';
 
 interface MobileDrawerProps {
   branches: BranchOption[];
+  activeBranchSlug: string | null;
 }
 
 /**
@@ -17,7 +18,7 @@ interface MobileDrawerProps {
  *
  * Pone overlay con fade + drawer sliding desde la izquierda. ESC cierra.
  */
-export function MobileDrawer({ branches }: MobileDrawerProps) {
+export function MobileDrawer({ branches, activeBranchSlug }: MobileDrawerProps) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -68,7 +69,7 @@ export function MobileDrawer({ branches }: MobileDrawerProps) {
               </button>
             </div>
             <div className="px-3 pb-3">
-              <BranchSelector branches={branches} initialBranchId="all" />
+              <BranchSelector branches={branches} activeSlug={activeBranchSlug} />
             </div>
             <div className="text-subtle px-4 pt-2 pb-1.5 font-mono text-[10px] tracking-wider uppercase">
               Workspace

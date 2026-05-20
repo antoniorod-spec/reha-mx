@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 
 import { AppShell } from '@/components/shell/app-shell';
 import { type BranchOption } from '@/components/shell/branch-selector';
+import { getActiveBranch } from '@/lib/agenda/active-branch';
 import { listBranches } from '@/lib/agenda/queries';
 import { getCurrentUserOrg } from '@/lib/auth/current-user-org';
 
@@ -28,7 +29,10 @@ export default async function WorkspaceLayout({ children }: LayoutProps) {
     redirect('/login');
   }
 
-  const branches = await listBranches(userOrg.organization.id);
+  const [branches, activeBranch] = await Promise.all([
+    listBranches(userOrg.organization.id),
+    getActiveBranch(userOrg.organization.id),
+  ]);
 
   const branchOptions: BranchOption[] = branches.map((b) => ({
     id: b.id,
@@ -54,6 +58,7 @@ export default async function WorkspaceLayout({ children }: LayoutProps) {
       pathLabel={pathLabel}
       user={user}
       branches={branchOptions}
+      activeBranchSlug={activeBranch?.slug ?? null}
     >
       {children}
     </AppShell>

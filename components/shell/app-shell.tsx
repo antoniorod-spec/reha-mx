@@ -12,6 +12,7 @@ interface AppShellProps {
     role: string;
   };
   branches: BranchOption[];
+  activeBranchSlug: string | null;
 }
 
 /**
@@ -26,17 +27,29 @@ interface AppShellProps {
  * por el layout de Next — todo server, sin client islands extra para fetch
  * de datos del shell mismo.
  */
-export function AppShell({ children, organizationName, pathLabel, user, branches }: AppShellProps) {
+export function AppShell({
+  children,
+  organizationName,
+  pathLabel,
+  user,
+  branches,
+  activeBranchSlug,
+}: AppShellProps) {
   return (
     <div className="bg-bg text-text min-h-screen">
       <div className="flex">
-        <Sidebar branches={branches} organizationName={organizationName} />
+        <Sidebar
+          branches={branches}
+          activeBranchSlug={activeBranchSlug}
+          organizationName={organizationName}
+        />
         <div className="flex min-h-screen min-w-0 flex-1 flex-col">
           <Topbar
             organizationName={organizationName}
             pathLabel={pathLabel}
             user={user}
             branches={branches}
+            activeBranchSlug={activeBranchSlug}
           />
           <div className="flex-1">{children}</div>
         </div>

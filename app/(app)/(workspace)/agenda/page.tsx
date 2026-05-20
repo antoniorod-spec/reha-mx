@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { Card } from '@/components/shared/card';
+import { getActiveBranch } from '@/lib/agenda/active-branch';
 import {
   listAppointments,
   listAppointmentTypes,
@@ -34,11 +35,11 @@ interface PageProps {
  *
  * Server Component:
  *   1. Resuelve org del usuario actual.
- *   2. Lee params: date (YYYY-MM-DD, default hoy), branch (slug | null = todas).
- *   3. Lista citas del día con joins (patient, practitioner, type, branch, room).
- *   4. Carga datos para el form de "Nueva cita" (branches, types, practitioners,
- *      rooms del branch seleccionado, primeros 25 pacientes).
- *   5. Emite audit log `agenda.viewed`.
+ *   2. Lee params: date (YYYY-MM-DD, default hoy).
+ *   3. Resuelve branch activo desde cookie (BranchSelector del sidebar).
+ *   4. Lista citas del día filtradas por branch activo (si hay).
+ *   5. Carga datos para el form de "Nueva cita".
+ *   6. Emite audit log `agenda.viewed`.
  *
  * Vista calendario (semana/día/mes con DnD-Kit) llega en sub-fase 1.2.b.
  */
@@ -51,23 +52,15 @@ export default async function AgendaPage({ searchParams }: PageProps) {
     redirect('/login?next=/agenda');
   }
 
-  const [branchList, typesList, practitionersList] = await Promise.all([
+  const [branchList, typesList, practitionersList, activeBranch] = await Promise.all([
     listBranches(userOrg.organization.id),
     listAppointmentTypes(userOrg.organization.id),
     listPractitioners(userOrg.organization.id),
+    getActiveBranch(userOrg.organization.id),
   ]);
 
-  // Selected branch (puede ser null = "Todas las sucursales")
-  const selectedBranch =
-    filters.branchSlug === null
-      ? null
-      : (branchList.find((b) => b.slug === filters.branchSlug) ?? null);
+  const effectiveBranchId = activeBranch?.id;
 
-  // Si el slug del query no matcheó, caemos a "todas"
-  const effectiveBranchId = selectedBranch?.id;
-
-  // Rango: día completo de filters.date en tz local del servidor.
-  // En sub-fase 1.2.b lo ajustamos al tz de la sucursal (master plan).
   const dayStart = new Date(`${filters.date}T00:00:00`);
   const dayEnd = new Date(dayStart);
   dayEnd.setDate(dayEnd.getDate() + 1);
@@ -92,12 +85,14 @@ export default async function AgendaPage({ searchParams }: PageProps) {
     resourceType: 'appointment',
     metadata: {
       date: filters.date,
-      branchSlug: filters.branchSlug,
+      branchSlug: activeBranch?.slug ?? null,
       results: appointmentsList.length,
     },
   });
 
   const canCreate = branchList.length > 0 && practitionersList.length > 0 && typesList.length > 0;
+  const branchLabel = activeBranch?.name ?? 'Vista consolidada';
+  const branchDotColor = activeBranch?.color ?? '#3FBCD4';
 
   return (
     <main className="px-4 pt-4 pb-10 sm:px-6 sm:pt-5">
@@ -109,9 +104,16 @@ export default async function AgendaPage({ searchParams }: PageProps) {
           <h1 className="text-text mt-1 text-[22px] font-semibold tracking-[-0.022em] sm:text-[28px]">
             Agenda<span className="text-accent">.</span>
           </h1>
-          <p className="text-muted mt-1.5 text-[12px] sm:text-[12.5px]">
-            Vista por día. Vista calendario (semana/mes con drag&amp;drop) llega en próximo
-            sub-sprint.
+          <p className="text-muted mt-1.5 flex items-center gap-2 text-[12px] sm:text-[12.5px]">
+            <span
+              className="size-1.5 shrink-0 rounded-full"
+              style={{ background: branchDotColor }}
+              aria-hidden
+            />
+            <span className="text-text">{branchLabel}</span>
+            <span className="text-subtle font-mono text-[11px]">
+              · cambia la sucursal en el sidebar
+            </span>
           </p>
         </div>
 
@@ -143,11 +145,7 @@ export default async function AgendaPage({ searchParams }: PageProps) {
       </header>
 
       <Card className="mb-4">
-        <AgendaToolbar
-          date={filters.date}
-          branchSlug={filters.branchSlug}
-          branches={branchList.map((b) => ({ id: b.id, slug: b.slug, name: b.name }))}
-        />
+        <AgendaToolbar date={filters.date} />
       </Card>
 
       {!canCreate && (
